@@ -28,6 +28,13 @@ In this method, we have implemented some parts of paper automatic red Channel un
 where superscript alpha denotes Red channel. The equation (3) is only used for the red channel restoration.
 Then, the restored image is shifted and normalized toward unity ( 0 - 1 ) using the minimum value of the restored image for shifting and then taking the maximum of the shifted image to normalize toward unity.
 
+Method 4:
+
+At first, the input image is smoothed by bilateral filtering. Then, the rest is Method 3.
+
+Method 5:
+
+At first, Method 3 is performed then the restored image is smoothed by bilateral filtering.
 
 
 
@@ -60,7 +67,7 @@ Run the following code to run the whole evaluations. While each of methods are e
       imshow(im2);
 
 
-      here is the medium transmission computation code:
+here is the medium transmission computation code:
 
       function [medtransMat , globalBackgLight]  =  mediumtransmissionMat ( im , gs ) 
       ###### gs must be an odd num
@@ -142,89 +149,6 @@ Run the following code to run the whole evaluations. While each of methods are e
       end  % end of function
 
 
-here is mediumtransmissionMat.m
-
-
-    function [medtransMat , globalBackgLight]  =  mediumtransmissionMat ( im , gs ) 
-    ###### gs must be an odd num
-
-    ##im = im2double(im);
-    imheight = size ( im , 1 ) ;
-    imwidth = size ( im , 2 ) ;
-
-    ## find brightest pixel in the dark channel- red
-    maxvalred  =  max  ( max ( im (  :  ,  :  ,  1  )   )   ) ;
-    indxmaxvalred = find ( im ( : , : , 1 )  == maxvalred ) ;
-    ## green global background light- scalar
-    greenglobalBackLight = im ( indxmaxvalred ( 1 ) +imheight*imwidth ) ;
-    ## blue global background light- scalar
-    blueglobalBackLight = im ( indxmaxvalred ( 1 ) +2*imheight*imwidth ) ;
-
-    globalBackgLight = double ( [maxvalred , greenglobalBackLight , blueglobalBackLight] );
-
-    ##  medium transmission size is as im
-    mediumtransmission = zeros ( imheight , imwidth ) ;
-
-    ##  gs is grid size
-
-    for r = 1:imheight
-        for c = 1:imwidth
-    ##      four corners of rect
-          rmin = r- ( gs-1 ) /2;
-          rmax = r+ ( gs-1 ) /2;
-          cmin = c- ( gs-1 ) /2;
-          cmax = c+ ( gs-1 ) /2;
-    ##      if rmin is out of boundary
-          if  ( rmin<1 ) 
-            rmin = 1;
-            rmax = rmin + gs - 1;
-          endif
-    ##      if cmin is out of boundary
-          if  ( cmin<1 ) 
-            cmin = 1;
-            cmax = cmin+gs - 1;
-          endif
-    ##      if rmax is out of boundary
-          if  ( rmax>imheight ) 
-            rmax = imheight;
-            rmin = rmax - gs - 1;
-          endif
-    ##      if cmax is out of boundary
-          if  ( cmax>imwidth ) 
-            cmax = imwidth;
-            cmin = cmax - gs - 1;
-          endif
-
-    ##    get gs by gs patch from image
-          patchImage =  im ( rmin:rmax , cmin:cmax , 1:3 );
-
-    ##    find the min of each patch- scalar
-          minpatchred = min ( min ( 1.0 - patchImage ( : , : , 1 ) ) );
-          minpatchgreen = min ( min ( patchImage ( : , : , 2 )  )  ) ;
-          minpatchblue = min ( min ( patchImage ( : , : , 3 )  )  ) ;
-
-    ##    normalize green and blue by local back light
-          patchImage ( : , : , 1 ) = patchImage ( : , : , 1 ) / ( 1.0 - maxvalred );
-          patchImage ( : , : , 2 )  = patchImage ( : , : , 2 ) /greenglobalBackLight;
-          patchImage ( : , : , 3 )  = patchImage ( : , : , 3 ) /blueglobalBackLight;
-
-    ##    min of green and blue patches-scalar
-          minpatch = min ( minpatchgreen , minpatchblue ) ;
-          minpatch = min ( minpatch , minpatchred );
-
-    ##    medium transmission- scalar
-          mediumtransmission ( r , c )  = 1.0 - minpatch;
-          if mediumtransmission ( r , c ) > 1.0
-            mediumtransmission ( r , c ) = 1.0;
-          endif
-
-        endfor # for c
-
-    endfor  # for r
-    medtransMat = mediumtransmission;
-    end  % end of function
-
-
 here is myevaluations.m codes:
 
 
@@ -260,6 +184,47 @@ here is myevaluations.m codes:
     maxmedtransMat = max(minmedtransMat, medtransMat);
     im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
     im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
+    
+    
+    %%%%%%
+    %%%%method 4
+    im2 = im(: , : , 1);
+    method = method + 1;
+    ####Bilateral filtering to enhance edge
+    im2 = im2double( imsmooth ( im2uint8( im2 ) , 'bilateral' ) );
+    minmedtransMat = 0.1 * ones( size(medtransMat) );
+    maxmedtransMat = max(minmedtransMat, medtransMat);
+    im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
+    im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
+    if min( im2(:) ) < 0
+      im2 = im2 + abs(min(im2(:)));
+      im2 = im2 / max( im2(:) );
+    endif
+    if min( im2(:) ) > 0
+      error(['method ', num2str(method), ' min( im2(:) ) is > 0']);
+    endif
+    mse = immse ( im2uint8(im2) , imref (:,:,1) );
+    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
 
+
+    %%%%%%
+    %%%%method 5
+    im2 = im(: , : , 1);
+    method = method + 1;
+    minmedtransMat = 0.1 * ones( size(medtransMat) );
+    maxmedtransMat = max(minmedtransMat, medtransMat);
+    im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
+    im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
+    if min( im2(:) ) < 0
+      im2 = im2 + abs(min(im2(:)));
+      im2 = im2 / max( im2(:) );
+    endif
+    if min( im2(:) ) > 0
+      error(['method ', num2str(method), ' min( im2(:) ) is > 0']);
+    endif
+    ####Bilateral filtering to enhance edge
+    im2u = imsmooth ( im2uint8( im2 ) , 'bilateral' );
+    mse = immse ( im2u , imref (:,:,1) );
+    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
 
     end
