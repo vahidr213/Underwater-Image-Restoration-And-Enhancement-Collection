@@ -37,11 +37,15 @@ Method 5:
 At first, Method 3 is performed then the restored image is smoothed by bilateral filtering.
 
 Method 6:
+
 This method only checks wiener deconvolution effect on the degraded red channel. A brief explanation of wiener deconvolution is described below. 
 wiener deconvolution tries to find an estimation for x(t) through Fourier transform. We have used this method to apply minor deburring of underwater images. 
 The wiener deconvolution method requires two initial known parameters that play the most important roles in estimating the deblurred and denoised images. Our intuitive investigations showed that underwater images can be deblurred by choosing the length of blurring as low as 3 to 5. The noise to signal ratio must be lower than 0.1 as well. In our experiments, we chose 3 for blurring length and 0.07 for noise to signal ratio.
 Increasing blurring length or noise to signal ratio above a threshold will cause the image to be more blurred or become darker. Blurring length is a parameter required for building point spread function matrix.
 
+Method 7:
+
+This method is Method 6 plus a bilateral filtering.
 
 
 Code: 
@@ -242,6 +246,20 @@ here is myevaluations.m codes:
     im2 = deconvwnr (im2, psf, estimated_nsr);
     mse = immse ( im2uint8(im2) , imref (:,:,1) );
     disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+
+    %%%%%%
+    %%%% method 7
+    im2 = im(: , : , 1);
+    method = method + 1;
+    psf = fspecial ("motion", 3, 0);
+    estimated_nsr = 0.07;
+    im2 = deconvwnr (im2, psf, estimated_nsr);
+    %%%% bilateral filtering
+    im2u = imsmooth ( im2uint8( im2 ) , 'bilateral' );
+    mse = immse ( im2u , imref (:,:,1) );
+    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
 
 
     end
