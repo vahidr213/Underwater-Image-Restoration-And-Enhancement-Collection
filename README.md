@@ -47,6 +47,10 @@ Method 7:
 
 This method is Method 6 plus a bilateral filtering.
 
+Method 8:
+
+This method starts with a bilateral filtering and then applies the wiener deconvolution.
+
 
 Code: 
 Run the following code to run the whole evaluations. While each of methods are executing, the mean square error is displayed in command line of MATLAB/Octave. 
@@ -77,7 +81,7 @@ Run the following code to run the whole evaluations. While each of methods are e
       imshow(im2);
 
 
-here is the medium transmission computation code:
+here is the medium transmission (mediumtransmissionMat.m) computation code:
 
       function [medtransMat , globalBackgLight]  =  mediumtransmissionMat ( im , gs ) 
       ###### gs must be an odd num
@@ -258,6 +262,19 @@ here is myevaluations.m codes:
     %%%% bilateral filtering
     im2u = imsmooth ( im2uint8( im2 ) , 'bilateral' );
     mse = immse ( im2u , imref (:,:,1) );
+    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+
+    %%%%%%
+    %%%% method 8
+    im2 = im(: , : , 1);
+    method = method + 1;
+    im2 = im2double( imsmooth ( im2uint8( im2 ) , 'bilateral' ) );
+    psf = fspecial ("motion", 3, 0);
+    estimated_nsr = 0.07;
+    im2 = deconvwnr (im2, psf, estimated_nsr);
+    %%%% bilateral filtering
+    mse = immse ( im2uint8(im2)  , imref (:,:,1) );
     disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
 
 
