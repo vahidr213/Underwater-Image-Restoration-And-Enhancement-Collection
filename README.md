@@ -51,6 +51,10 @@ Method 8:
 
 This method starts with a bilateral filtering and then applies the wiener deconvolution.
 
+Method 9:
+
+This method is the parametric version of the Method 6. In this case, there are two parameters to be tweaked. The first one is the estimated noise to signal ratio that presents the amount of noise that is supposed to be in the image. The second parameter is the length of blurring to be considered.
+
 
 Code: 
 Run the following code to run the whole evaluations. While each of methods are executing, the mean square error is displayed in command line of MATLAB/Octave. 
@@ -277,6 +281,20 @@ here is myevaluations.m codes:
     mse = immse ( im2uint8(im2)  , imref (:,:,1) );
     disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
 
+    %%%%%%
+    %%%% method 9
+    method = method + 1;
+    for estimated_nsr = 0.01:0.01:0.1
+      for motion = 2:10
+        im2 = im(: , : , 1);
+        psf = fspecial ("motion", motion, 0);
+        im2 = deconvwnr (im2, psf, estimated_nsr);
+        mse = immse ( im2uint8(im2) , imref (:,:,1) );
+        disp ( ' (NSR,Motion)=' );
+        disp ( [ estimated_nsr , motion ] ) ;
+        disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+      endfor
+    endfor
 
 
     end
