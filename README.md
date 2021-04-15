@@ -64,6 +64,21 @@ Method 11:
 
 This is a parametric evaluation that starts with bilateral filtering and then finishes with wiener deconvolution.
 
+Method 12:
+
+This method is just a parametric 2-D median filtering of image. The neighbor size is the parameter that is tweaked.
+
+Method 13:
+
+This method is the same as Method 12, but a bilateral filtering is applied before median filtering.
+
+Method 14:
+
+This method is the same as Method 12 plus a bilateral filtering after each median filtering.
+
+Method 15:
+
+This method chooses all different permutations of 3 functions. These functions are median filtering, bilateral filtering and wiener deconvolution. All 3 above mentioned functions are evaluated under different ranges of their input parameters. In brief, this method is a parametric evaluation of all permutations of the 3 functions that are part of image enhancement tools.
 
 
 Code: 
@@ -340,6 +355,121 @@ here is myevaluations.m codes:
         disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
       endfor
     endfor
+    
+
+        %%%%%
+    %%% method 12
+    method = method + 1;
+    for gs = 3:15
+      im2 = im(: , : , 1);
+      im2 = medfilt2( im2 , [gs,gs] );
+      mse = immse ( im2uint8(im2) , imref (:,:,1) );
+      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
+      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+    endfor
+
+    %%%%%
+    %%% method 13
+    method = method + 1;
+    for gs = 3:15
+      im2 = im(: , : , 1);
+      im2 = imsmooth ( im2 , 'bilateral' );
+      im2 = medfilt2( im2 , [gs,gs] );
+      mse = immse ( im2uint8(im2) , imref (:,:,1) );
+      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
+      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+    endfor
+
+    %%% method 14
+    method = method + 1;
+    for gs = 3:15
+      im2 = im(: , : , 1);  
+      im2 = medfilt2( im2 , [gs,gs] );
+      im2 = imsmooth ( im2 , 'bilateral' );
+      mse = immse ( im2uint8(im2) , imref (:,:,1) );
+      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
+      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+    endfor
+
+
+    %%% method 15
+    method = method + 1;
+    for sigmaR = 5/255 : 5/255 : 20/255
+      for sigmaD = 1 : 6
+        for gs = 2 : 10
+          for estimated_nsr = 0.01:0.01:0.1
+            for motion = 2:10
+    %%%          permutation 1
+              im2 = im(: , : , 1);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = medfilt2( im2 , [gs gs] );
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+              %%%          permutation 2
+              im2 = im(: , : , 1);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              im2 = medfilt2( im2 , [gs gs] );          
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+              %%%          permutation 3
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);          
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+              %%%          permutation 4
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);          
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+
+              %%%          permutation 5
+              im2 = im(: , : , 1);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);          
+              im2 = medfilt2( im2 , [gs gs] );
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);          
+
+              %%%          permutation 
+              im2 = im(: , : , 1);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              im2 = medfilt2( im2 , [gs gs] );
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);                    
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
+              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
+              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+            endfor
+          endfor
+        endfor
+      endfor
+    endfor
+
 
 
     end
