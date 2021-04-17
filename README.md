@@ -80,6 +80,35 @@ Method 15:
 
 This method chooses all different permutations of 3 functions. These functions are median filtering, bilateral filtering and wiener deconvolution. All 3 above mentioned functions are evaluated under different ranges of their input parameters. In brief, this method is a parametric evaluation of all permutations of the 3 functions that are part of image enhancement tools.
 
+Method 16:
+
+This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+•	Perona & Malik, Anisotropic Diffusion image smoothing
+•	2-D Median filtering
+•	Bilateral filtering
+This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
+The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
+
+
+Method 17:
+
+This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+•	Perona & Malik, Anisotropic Diffusion image smoothing
+•	2-D Median filtering
+•	Wiener deconvolution
+This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
+The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
+
+
+Method 18:
+
+This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+•	Anisotropic Gaussian smoothing
+•	Wiener deconvolution
+•	2-D median filtering
+This method also checks the permutation of 2 functions as well as 3 functions. Therefore, the first 6 permutations are for combination of 3 functions and the other 4 permutations are for 2-function combinations. The variables could also be changed deliberately by your desired ranges.
+
+
 
 Code: 
 Run the following code to run the whole evaluations. While each of methods are executing, the mean square error is displayed in command line of MATLAB/Octave. 
@@ -470,6 +499,270 @@ here is myevaluations.m codes:
       endfor
     endfor
 
+
+    %%% method 16
+    method = method + 1;
+    minmse = 1e6;
+    permmin = [0,0,0,0,0,0,0,0];
+    for sigmaR = 5/255 : 5/255 : 20/255
+      for sigmaD = 1 : 6
+        for gs = 2 : 10
+          for peronaIteration = 1:2
+            for lambda = 0.1:0.15:0.25
+    %%%          permutation 1          
+              permutation = 1;
+              im2 = im(: , : , 1);          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = medfilt2( im2 , [gs gs] );
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );          
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+
+              %%%          permutation 2
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              im2 = medfilt2( im2 , [gs gs] );          
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 3
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 4
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 5
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = medfilt2( im2 , [gs gs] );
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 6
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
+              im2 = medfilt2( im2 , [gs gs] );          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+            endfor
+          endfor
+        endfor
+      endfor
+    endfor
+
+
+
+    %%% method 17
+    method = 17;
+    minmse = 1e6;
+    permmin = [0,0,0,0,0,0,0,0];
+    for estimated_nsr = 0.005:0.005:0.015
+      for motion = 2:5
+        for gs = 2 : 10
+          for peronaIteration = 1:2
+            for lambda = 0.1:0.15:0.25
+    %%%          permutation 1          
+              permutation = 1;
+              im2 = im(: , : , 1);          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = medfilt2( im2 , [gs gs] );
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );          
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+
+              %%%          permutation 2
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = medfilt2( im2 , [gs gs] );          
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 3
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 4
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              im2 = medfilt2( im2 , [gs gs] );
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 5
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              im2 = medfilt2( im2 , [gs gs] );
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+              %%%          permutation 6
+              permutation = permutation + 1;
+              im2 = im(: , : , 1);
+              psf = fspecial ("motion", motion, 0);
+              im2 = deconvwnr (im2, psf, estimated_nsr);
+              im2 = medfilt2( im2 , [gs gs] );          
+              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
+              endif
+              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
+              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
+              disp ( permmin );
+
+            endfor
+          endfor
+        endfor
+      endfor
+    endfor
+
+
+    %%%%% method 18
+    %%%%%% v1=lambda1=lambda2 for Gaussian
+    %%%%%% v2 = estimated_nsr
+    %%%%%% v3 = motion
+    %%%%%% v4 = grid size
+    method = 18;
+    minmse = 1e6;
+    funorder=perms([1 2 3]);
+    funorder2=cat(1,perms([1 2]),perms([1 3]));
+    funorder3=cat(2,funorder2,[0;0;0;0]);
+    funorder=cat(1,funorder,funorder3);
+    for v1=1:3
+      for v2=0.005:0.005:0.02
+        for v3=1:3
+          for v4=3:2:5
+            for i=1:size(funorder,1)
+              im2=im(:,:,1);
+              for j=1:size(funorder,2)
+                if funorder(i,j)==1
+                  im2=imsmooth(im2,'custom gaussian',v1,v1);
+                elseif funorder(i,j)==2
+                  psf=fspecial('motion',v3);
+                  im2=deconvwnr(im2,psf,v2);
+                elseif funorder(i,j)==3
+                  im2=medfilt2(im2,[v4,v4]);
+                endif
+              endfor % j
+              mse = immse ( im2uint8(im2) , imref (:,:,1) );
+              if mse < minmse
+                minmse = mse;
+                permmin = [i, method, mse, v1, v2, v3, v4];
+              endif
+              disp ( '(permutation, method, mse, v1, v2, v3, v4) =' );
+              printf ('%.3f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f\n',i, method, mse, v1,v2,v3,v4) ;
+              printf( '%.3f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f\n',permmin(1),permmin(2),permmin(3),permmin(4),permmin(5),permmin(6),permmin(7) );
+
+            endfor % i
+          endfor % v4
+        endfor % v3
+      endfor % v2
+    endfor % v1
 
 
     end
