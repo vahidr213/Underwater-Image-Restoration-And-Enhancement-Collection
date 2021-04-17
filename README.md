@@ -83,9 +83,13 @@ This method chooses all different permutations of 3 functions. These functions a
 Method 16:
 
 This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+
 •	Perona & Malik, Anisotropic Diffusion image smoothing
+
 •	2-D Median filtering
+
 •	Bilateral filtering
+
 This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
 The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
 
@@ -93,9 +97,13 @@ The outputs are the current used parameters (mse , … ) and the best minimum me
 Method 17:
 
 This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+
 •	Perona & Malik, Anisotropic Diffusion image smoothing
+
 •	2-D Median filtering
+
 •	Wiener deconvolution
+
 This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
 The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
 
@@ -103,9 +111,13 @@ The outputs are the current used parameters (mse , … ) and the best minimum me
 Method 18:
 
 This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+
 •	Anisotropic Gaussian smoothing
+
 •	Wiener deconvolution
+
 •	2-D median filtering
+
 This method also checks the permutation of 2 functions as well as 3 functions. Therefore, the first 6 permutations are for combination of 3 functions and the other 4 permutations are for 2-function combinations. The variables could also be changed deliberately by your desired ranges.
 
 
