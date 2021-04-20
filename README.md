@@ -760,8 +760,8 @@ here is myevaluations.m codes:
     method = 18;
     minmse = 1e6;
     funorder=perms([1 2 3]);
-    funorder2=cat(1,perms([1 2]),perms([1 3]));
-    funorder3=cat(2,funorder2,[0;0;0;0]);
+    funorder2=cat(1,perms([1 2]),perms([1 3]),perms([2,3]));
+    funorder3=cat(2,funorder2,[0;0;0;0;0;0]);
     funorder=cat(1,funorder,funorder3);
     for v1=1:3
       for v2=0.005:0.005:0.02
