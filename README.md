@@ -66,7 +66,13 @@ This is a parametric evaluation that starts with bilateral filtering and then fi
 
 Method 12:
 
-This method is just a parametric 2-D median filtering of image. The neighbor size is the parameter that is tweaked.
+This method is based on blending median filtered green and median filtered blue channels with coefficients ‘a’ and ‘b’. The result of blending green and blue channels are added to the red channel to restore the degraded red channel based on the equation below:
+
+
+Ired=Ired + a * Igreen_median + b * Iblue_median
+
+
+This method evaluates different ‘a’ and ‘b’ coefficients in the unity range with an increment step set to 5e-5. Therefore, you can find out the best coefficients that minimizes the mean squared error.
 
 Method 13:
 
@@ -401,12 +407,24 @@ here is myevaluations.m codes:
         %%%%%
     %%% method 12
     method = method + 1;
-    for gs = 3:15
-      im2 = im(: , : , 1);
-      im2 = medfilt2( im2 , [gs,gs] );
+    minmse=1e6;
+    abest=0.0;
+    bbest=0.0;
+    for a = 5e-5:5e-5:1
+      for b = 5e-5:5e-5:1
+      im2=im(:,:,1)+a*medfilt2(im(:,:,2),[3,3])+b*...
+      medfilt2(im(:,:,3),[3,3]);
+      im2=im2/max(im2(:));
       mse = immse ( im2uint8(im2) , imref (:,:,1) );
-      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
-      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+      if mse < minmse
+        minmse = mse;
+        abest = a;
+        bbest = b;
+      endif
+
+      disp('a, b, mse, best a, best b, min mse:');
+      printf('%.5f   %.5f  %.3f  %.5f  %.5f %.3f\n',a,b,mse,abest,bbest,minmse);
+    endfor
     endfor
 
     %%%%%
