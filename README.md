@@ -21,7 +21,7 @@ This method is the reverse order of the method one. The degraded image is first 
 
 Method 3:
 
-In this method, we have implemented some parts of paper automatic red Channel underwater image restoration. We have chosen the restoration equation of the paper shown in equation 3.
+In this method, we have implemented some parts of paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10). We have chosen the restoration equation of the paper shown in equation 3.
 ![image](https://user-images.githubusercontent.com/6873668/114383410-c1997900-9ba2-11eb-8e62-ba35e3fced07.png)
                       (3)
 
