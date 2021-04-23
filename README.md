@@ -4,7 +4,7 @@ I need to look for an efficient and precise method. The collection of algorithms
 In the following code, "imref" is the initial or almost nearly perfect Image. This variable is the image that is almost Haze and Blur free image which we are going to destruct using medium transmission by the following equation (1).
 I(x) = J(x) t(x)   		(1)
 Where J(x) is the reference image ('imref' var), t(x) is the medium transmission (medtransMat) and I(x) is the red channel degraded image ('im' var).
-
+We have implemented medium transmissionbased on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10).
 Notice that only red Channel of J(x) is affected by medium transmission.
 
 Method  1:
@@ -19,14 +19,7 @@ Method 2:
 
 This method is the reverse order of the method one. The degraded image is first smoothed by bilateral filtering and then compensated by medium transmission equation.
 
-Method 3:
 
-In this method, we have implemented some parts of paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10). We have chosen the restoration equation of the paper shown in equation 3.
-![image](https://user-images.githubusercontent.com/6873668/114383410-c1997900-9ba2-11eb-8e62-ba35e3fced07.png)
-                      (3)
-
-where superscript alpha denotes Red channel. The equation (3) is only used for the red channel restoration.
-Then, the restored image is shifted and normalized toward unity ( 0 - 1 ) using the minimum value of the restored image for shifting and then taking the maximum of the shifted image to normalize toward unity.
 
 Method 4:
 
@@ -161,6 +154,7 @@ here is the medium transmission (mediumtransmissionMat.m) computation code:
 
 
     function medtransMat =  mediumtransmissionMat ( im , gs ) 
+    %%%%%% implemented based on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10)
     %%%%%% gs must be an odd num
     %%% im must be normalize [0-1]
     half=floor(gs*gs/2);
