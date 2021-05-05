@@ -21,7 +21,8 @@ To make numeral structure for several restoration methods that may differ slight
 
 Description of functions:
 
-•	mediumtransmissionMat (im, gs, method): 
+•	mediumtransmissionMat (im, gs, method)
+
 This function calculates the medium transmission matrix with available methods provided in scientific papers. 
 
 The first input argument is the input underwater image in unity (0-1) range and double data type. The second argument is the grid size for local patch. The patch will be a square with gs as its length/width. The 3rd argument for medium transmission calculation (e.g. 1 is UDCP and 2 is IATP).
