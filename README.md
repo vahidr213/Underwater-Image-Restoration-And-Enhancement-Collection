@@ -9,11 +9,11 @@ Notice that only red Channel of J(x) is affected by medium transmission.
 
 Method  1:
 
-The medium transmission is computed for the degraded image and is used to compensate red Channel of image by the following equation (2).
+This method is the octave script for paper underwater image restoration based on a new underwater image formation model. The given source code for saliency detection contains a variety of saliency detectors that capables you to choose among different saliency detectors. Saliency detectors can be selected by changing the second input to image saliency function (im_saliency()).
 
-I2 = I × t(x) + A × ( 1 - t(x) )   	(2)
+This method starts with medium transmission computation of the degraded image. Medium transmission matrix contains values in unity range, showing high values at foreground or non-water regions and low values at background or water regions. Medium transmission computation is computationally low.
 
-Then, the compensated image is filtered by bilateral filter. At last, the mean Square error is computed between the red Channel of the reference image and compensated image.
+
 
 Method 2:
 
@@ -150,24 +150,68 @@ Run the following code to run the whole evaluations. While each of methods are e
       imshow(im2);
 
 
-here is the medium transmission (mediumtransmissionMat.m) computation code:
+here is the medium transmission (mediumtransmissionMat.m) definition:
 
+      function [medtransMat, varargout] =  mediumtransmissionMat (im, gs, method)
+      %%%%%%%% gs must be an odd num
 
-    function medtransMat =  mediumtransmissionMat ( im , gs ) 
-    %%%%%% implemented based on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10)
-    %%%%%% gs must be an odd num
-    %%% im must be normalize [0-1]
-    half=floor(gs*gs/2);
-    immin =ones(size(im));
-    for k=2:3
-      for i=-half:half
-        for j=-half:half
-          immin(:,:,k)=min(immin(:,:,k) , circshift(im(:,:,k),[i,j]));
+      if method == 1 %%%% UDCP method
+        half=floor(gs*gs/2);
+        immin =ones(size(im));
+        for k=2:3
+          for i=-half:half
+            for j=-half:half
+              immin(:,:,k)=min(immin(:,:,k) , circshift(im(:,:,k),[i,j]));
+            endfor
+          endfor
         endfor
-      endfor
-    endfor
-    medtransMat=1-min(immin,[],3);   
-    end % end of function
+
+        medtransMat=1-min(immin,[],3);
+
+        if nargout == 2
+          imheight = size ( im , 1 ) ;
+          imwidth = size ( im , 2 ) ;
+          %%%% find brightest pixel in the dark channel- red
+          maxvalred=max(max(im(:,:,1))) ;
+          indxmaxvalred = find ( im ( : , : , 1 )  == maxvalred ) ;
+          %%%% green global background light- scalar
+          greenglobalBackLight = im ( indxmaxvalred(1) + imheight * imwidth ) ;
+          %%%% blue global background light- scalar
+          blueglobalBackLight = im ( indxmaxvalred ( 1 ) + 2*imheight*imwidth ) ;
+
+          globalBackgLight = double ( [maxvalred, greenglobalBackLight, blueglobalBackLight] );
+
+          varargout{1}=globalBackgLight;
+        endif
+
+      elseif method == 2  %%% Carlevaris-Bianco et al  
+        % % % N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice, ‘‘Initial results
+        % % % in underwater single image dehazing,’’ in Proc. IEEE Conf. OCEANS
+        half=floor(gs*gs/2);
+        immax =zeros(size(im));%% zero filling for max comparisons
+        for k=1:3
+          for i=-half:half
+            for j=-half:half
+              immax(:,:,k)=max(immax(:,:,k) , circshift(im(:,:,k),[i,j]));
+            endfor
+          endfor
+        endfor
+        immax(:,:,2)=max(immax(:,:,2), immax(:,:,3));%%% max bw green and ble channels
+        immax(:,:,1)=immax(:,:,1)-immax(:,:,2);%%% eq.8 paper(underwater image restoration based on a new underwater image formation)
+        %%%% save a copy of immax(:,:,1) in immax(:,:,3) for eq.9 computation
+        immax(:,:,3)=immax(:,:,1);
+        % % % % finding local max in immax(:,:,1)
+        for i=-half:half
+          for j=-half:half
+            immax(:,:,3)=max(immax(:,:,3) , circshift(immax(:,:,1),[i,j]));
+          endfor
+        endfor
+        medtransMat=1+immax(:,:,1)-immax(:,:,3);
+
+
+      endif
+
+      end  % end of function
 
 
 here is myevaluations.m codes:
@@ -179,13 +223,92 @@ here is myevaluations.m codes:
     method = 0;
     gsdestruction = 3;
 
-    im2 = im(:,:,1);
-    method = method +1;
-    [medtransMat , globalBackgLight]  =  mediumtransmissionMat ( im , gsdestruction ) ;
-    im2 = ( im2  .* medtransMat + ( globalBackgLight(1) ) * ( 1 - medtransMat) );
-    im2u =  imsmooth ( im2uint8( im2 ) , 'bilateral' ) ;
-    mse = immse ( im2u , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
+    method = 1.0;
+      gs = 3;
+      %%% % % calculate medium transmission for degraded picture
+      [medtransMat, globalBackgLight] =  mediumtransmissionMat (im, gs, 1);% 1=UDCP
+      medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);% make a 3 channel
+      saliencymap = saliency_detection(medtransMat3,1);
+
+      %%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
+      %%%%%%the below code supports both gray and 3D images
+      num_levels = 4; % num of gauss and laplacian pyr levels
+      pyr=cell(1,num_levels);
+      lappyr=cell(1,num_levels);
+      salGaussPyr = cell(1,num_levels);
+      finalmedtransPyr = cell(1,num_levels);
+
+      salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
+      lappyr=buildpyramid(medtransMat,num_levels,2);%laplacian pyr of medium transmission
+
+      %%%%% multiplying saliency map gaussian pyramid
+      %%%%% with laplacian pyramid of medium transmission
+      for i = 1 : (num_levels)
+        finalmedtransPyr{i} = salGaussPyr{i} .* lappyr{i};  
+        %%%%% normalizing to 0-1
+        % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
+        %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
+        % endif
+      end
+      finalmedtransPyr1=finalmedtransPyr;
+
+      %%%%%%                       2nd medium transmission with IATP
+      medtransMat =  mediumtransmissionMat (im, gs, 2); %%% 2 = IATP medium transmission
+      medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);%%% make it 3 channel
+
+      saliencymap = saliency_detection(im2uint8(medtransMat3), 1);%%%% 1 = method 1
+
+      %%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
+      %%%%%%the below code supports both gray and 3D images
+      salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
+      lappyr=buildpyramid(medtransMat,num_levels,2);%laplacian pyr of medium transmission
+      %%%%% multiplying saliency map gaussian pyramid with laplacian pyramid of medium transmission
+      for i = 1 : (num_levels)
+        finalmedtransPyr{i} = salGaussPyr{i} .* lappyr{i};
+        %%%%% normalizing to 0-1
+        % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
+        %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
+        % endif
+        % finalmedtransPyr{i}=guided_filter(finalmedtransPyr{i}, pyr{i}, 0.01, 5);
+      end
+      finalmedtransPyr2 = finalmedtransPyr;
+
+      finalmedtransMat=pyramid_reconstruct(finalmedtransPyr1);
+      finalmedtransMat=im_unity(finalmedtransMat);
+      finalmedtransMat=log(max(finalmedtransMat,0.01*ones(size(finalmedtransMat))))/log(0.8);
+      finalmedtransMat=0.85.^finalmedtransMat;
+      im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(finalmedtransMat)) , globalBackgLight(1)*finalmedtransMat);
+      im2=im_unity(im2);
+      mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+      disp('');
+      disp('using UDCP medium transmission:');
+      disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+
+      finalmedtransMat=pyramid_reconstruct(finalmedtransPyr2);
+      finalmedtransMat=im_unity(finalmedtransMat);
+      finalmedtransMat=log(max(finalmedtransMat,0.01*ones(size(finalmedtransMat))))/log(0.8);
+      finalmedtransMat=0.85.^finalmedtransMat;
+      im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(finalmedtransMat)) , globalBackgLight(1)*finalmedtransMat);
+      im2=im_unity(im2);
+      mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+      disp('');
+      disp('using IATP medium transmission:');
+      disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+
+      % %%%%%% combining 2 final medium transmission pyramids into one
+      for i=1:num_levels
+        finalmedtransPyr{i}=finalmedtransPyr{i}+finalmedtransPyr1{i};
+      endfor
+      finalmedtransMat=pyramid_reconstruct(finalmedtransPyr);
+      finalmedtransMat=im_unity(finalmedtransMat);
+      finalmedtransMat=log(max(finalmedtransMat,0.01*ones(size(finalmedtransMat))))/log(0.8);
+      finalmedtransMat=0.85.^finalmedtransMat;
+      im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(finalmedtransMat)) , globalBackgLight(1)*finalmedtransMat);
+      im2=im_unity(im2);
+      mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+      disp('');
+      disp('using IATP + UDCP medium transmission:')
+      disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 
     %%%%%%%%%%%
     %%%%%   2
