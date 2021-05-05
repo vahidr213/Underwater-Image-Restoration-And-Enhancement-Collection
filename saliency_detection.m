@@ -55,7 +55,19 @@ sm = im_unity(sm);
 %imshow(sm,[]);
 %---------------------------------------------------------
 elseif method == 2
+    %---------------------------------------------------------
+% Copyright (c) 2010 Radhakrishna Achanta [EPFL]
+% Contact: firstname.lastname@epfl.ch
+%---------------------------------------------------------
+% Citation:
+% @InProceedings{Achanta_Saliency_ICVS_2008,
+%    author      = {Achanta, Radhakrishna and Extrada, Francisco and S�sstrunk, Sabine},
+%    booktitle   = {{I}nternational {C}onference on {C}omputer
+%                  {V}ision {S}ystems},
+%    year        = 2008
+
     %%%%%%%%%calculate the saliency map for medium transmission
+    disp('this may take > 20 min...')
     width = size(im,2);
     height = size(im,1);
     md = min(width, height);%minimum dimension

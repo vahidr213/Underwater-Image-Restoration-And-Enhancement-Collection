@@ -1,11 +1,11 @@
 clc
 clear all
 close all
-pkg load image
-frame = 5;
-fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);
-imref = imread(fileNameDataSet);
-im = imref;
+pkg load image % comment this line if using Matlab
+frame = 5;%suffix for reading frame
+fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
+imref = imread(fileNameDataSet);% reference image
+im = imref;% im holds the degraded image
 im2 = im;
 %%%% convert im to normalize 0-1 range
 im = im2double( im );
@@ -19,14 +19,14 @@ disp(['mse bw ref image and degraded image is:    ',num2str(mse)]);
 %%figure,imshow(cat(2,im2uint8(im),imref))
 
 %%%%%%%%%%% 
-
+im(:,:,1)=im2double(imref(:,:,1));
 tic
 % im(:,:,1) = guided_filter(im(:,:,1), medtransMat, 0.1, 5);
-im2( : , : , 1) = im2uint8( myevaluations(im,imref) );
+im2( : , : , 1) = im2uint8(myevaluations(im,imref,1.0));
 mse = immse (im2(:,:,1) , imref (:,:,1) );
 % disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 % figure('name','restored vs original'),imshow(cat(2, im2, imref));
-figure('name','restored vs original'),imshow(cat(2, im2, im2uint8(im) ));
+
 
 toc
 %%%return
