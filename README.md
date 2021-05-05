@@ -1,10 +1,40 @@
 # A-Collection-Of-Underwater-Image-Restoration-And-Enhancement-With-Mean-Squared-Error-Measuring
 
-I need to look for an efficient and precise method. The collection of algorithms I've tested so far are gathered together in file myevaluation.m.
-In the following code, "imref" is the initial or almost nearly perfect Image. This variable is the image that is almost Haze and Blur free image which we are going to destruct using medium transmission by the following equation (1).
+Underwater images typically exhibit color distortion and low contrast as a result of the exponential decay that light suffers as it travels. Moreover, colors associated to different wavelengths have different attenuation rates, being the red wavelength the one that attenuates the fastest.
+
+To restore underwater images, red channel prior is used which is a concept captured from dark channel prior. The Red Channel method can be interpreted as a variant of the Dark Channel method used for images degraded by the atmosphere when exposed to haze.
+
+The possibility of improving underwater images by just using image processing techniques is very appealing due to the low cost of implementation when compared with more sophisticated techniques. These methodologies enjoy a wide range of applications, from marine biology and archaeology to ecological research. The improvement of unmanned vehicles (ROV) navigation capabilities is also a very important field of application.
+
+The provided Source Code is compiled with octave without problem. In case you have MATLAB software, you may possibly need to change some functions with their MATLAB counterparts ( the source code is is mostly compatible with MATLAB).
+
+If you are using MATLAB you need to comment the 'pkg load image' command (other lines are ok).
+
+The source code starts with reading and underwater image. You can use any underwater image you have.
+The process starts with degrading the red channel of the reference image. In or case, we have provided a few high quality underwater images where the red channel was perfect (it has wide range of intensities). This way leads to have a reference and a degraded red channel image.
+
+Then, the reference and degraded images are given to function 'myevaluations()' where this function tries to estimate the initial reference red channel again. Now we can measure the mean squared error between the red channel of the reference image and the restored red channel.
+
+If you want to only restore your image, not the degraded version of your Image, just uncomment the line with this command (im(:,:,1) = imref(:,:,1)).
+
+To make numeral structure for several restoration methods that may differ slightly with each other, each method has a decimal or integer part followed by a floating point where the floating point is assigned for variants of each method.
+
+Description of functions:
+
+•	mediumtransmissionMat (im, gs, method): 
+This function calculates the medium transmission matrix with available methods provided in scientific papers. 
+
+The first input argument is the input underwater image in unity (0-1) range and double data type. The second argument is the grid size for local patch. The patch will be a square with gs as its length/width. The 3rd argument for medium transmission calculation (e.g. 1 is UDCP and 2 is IATP).
+
+•	saliency_detection(img,method)
+
+Saliency detection is an effective way to determine objects and separate them from the background. Machine vision systems extract general purpose saliency as facing unpredictable and innumerable categories of visual patterns. The saliency detection function contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument. 
+
+
+Through the code, "imref" is the initial or almost nearly perfect Image. This variable is the image that is almost Haze and Blur free image which we are going to destruct using medium transmission by the following equation (1).
 I(x) = J(x) t(x)   		(1)
 Where J(x) is the reference image ('imref' var), t(x) is the medium transmission (medtransMat) and I(x) is the red channel degraded image ('im' var).
-We have implemented medium transmissionbased on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10).
+We have implemented medium transmission based on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10).
 Notice that only red Channel of J(x) is affected by medium transmission.
 
 Method  1:
