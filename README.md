@@ -39,6 +39,11 @@ This function calculates the medium transmission matrix with available methods p
 
 The first input argument is the input underwater image in unity (0-1) range and double data type. The second argument is the grid size for local patch. The patch will be a square with gs as its length/width. The 3rd argument for medium transmission calculation (e.g. 1 is UDCP and 2 is IATP).
 
+Method:
+1	=	UDCP
+2	=	IATP
+
+
 •	saliency_detection(img,method)
 
 Saliency detection is an effective way to determine objects and separate them from the background. Machine vision systems extract general purpose saliency as facing unpredictable and innumerable categories of visual patterns. The saliency detection function contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument. 
