@@ -95,11 +95,6 @@ The work that is done in this Method 1.0 and its variants is described in [1]. T
 
 
 
-[1] 	Underwater Image Restoration Based On a New Underwater Image Formation Model
-
-
-
-
 Method 2:
 
 This method is the reverse order of the method one. The degraded image is first smoothed by bilateral filtering and then compensated by medium transmission equation.
@@ -204,7 +199,7 @@ This method is a parametric evaluation of all possible permutations of 3 methods
 
 This method also checks the permutation of 2 functions as well as 3 functions. Therefore, the first 6 permutations are for combination of 3 functions and the other 4 permutations are for 2-function combinations. The variables could also be changed deliberately by your desired ranges.
 
-
+[1] 	Underwater Image Restoration Based On a New Underwater Image Formation Model
 
 Code: 
 Run the following code to run the whole evaluations. While each of methods are executing, the mean square error is displayed in command line of MATLAB/Octave. 
