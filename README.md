@@ -48,14 +48,17 @@ Values for 3rd argument:
 
 •	saliency_detection(img,method)
 
-Saliency detection is an effective way to determine objects and separate them from the background. Machine vision systems extract general purpose saliency as facing unpredictable and innumerable categories of visual patterns. The saliency detection function contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument. 
 
+Saliency detection is an effective way to determine objects and separate them from the background. Machine vision systems extract general purpose saliency as facing unpredictable and innumerable categories of visual patterns. The main idea behind the use of saliency extraction is that it is been experientially found that the salient regions of the medium transmission estimated by IATP or UDCP are relatively accurate.
 
-Through the code, "imref" is the initial or almost nearly perfect Image. This variable is the image that is almost Haze and Blur free image which we are going to destruct using medium transmission by the following equation (1).
-I(x) = J(x) t(x)   		(1)
-Where J(x) is the reference image ('imref' var), t(x) is the medium transmission (medtransMat) and I(x) is the red channel degraded image ('im' var).
-We have implemented medium transmission based on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10).
-Notice that only red Channel of J(x) is affected by medium transmission.
+Saliency detectors have long been used in machine vision systems. There are numerous proposed saliency detectors in scientific journals. Therefore, we are trying to evaluate some of them in function altogether. The saliency detection function provided in our source code, contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument.
+
+Option	Reference	
+
+1		[4]
+
+2		[5]
+
 
 Method  1.0:
 
@@ -223,6 +226,11 @@ This method also checks the permutation of 2 functions as well as 3 functions. T
 [2]   P. L. J. Drews, Jr., E. R. Nascimento, S. S. C. Botelho, and M. F. M. Campos, ‘‘Underwater depth estimation and image restoration based on single images,’’ IEEE Comput. Graph. Appl., vol. 36, no. 2, pp. 24–35, Mar./Apr. 2016.
 
 [3]   N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice, ‘‘Initial results in underwater single image dehazing,’’ in Proc. IEEE Conf. OCEANS, Sep. 2010, pp. 1–8.
+
+[4]	http://ivrg.epfl.ch/supplementary_material/RK_CVPR09/index.html
+
+[5]	https://www.epfl.ch/labs/ivrl/research/saliency/salient-region-detection-and-segmentation/
+
 
 
 Code: 
