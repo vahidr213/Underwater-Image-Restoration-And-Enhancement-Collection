@@ -41,9 +41,9 @@ The first input argument is the input underwater image in unity (0-1) range and 
 
 Method:
 
-1	=	UDCP
+1	=	UDCP [2]
 
-2	=	IATP
+2	=	IATP [3]
 
 
 •	saliency_detection(img,method)
@@ -219,6 +219,11 @@ This method is a parametric evaluation of all possible permutations of 3 methods
 This method also checks the permutation of 2 functions as well as 3 functions. Therefore, the first 6 permutations are for combination of 3 functions and the other 4 permutations are for 2-function combinations. The variables could also be changed deliberately by your desired ranges.
 
 [1] 	Underwater Image Restoration Based On a New Underwater Image Formation Model
+
+[2]   P. L. J. Drews, Jr., E. R. Nascimento, S. S. C. Botelho, and M. F. M. Campos, ‘‘Underwater depth estimation and image restoration based on single images,’’ IEEE Comput. Graph. Appl., vol. 36, no. 2, pp. 24–35, Mar./Apr. 2016.
+
+[3]   N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice, ‘‘Initial results in underwater single image dehazing,’’ in Proc. IEEE Conf. OCEANS, Sep. 2010, pp. 1–8.
+
 
 Code: 
 Run the following code to run the whole evaluations. While each of methods are executing, the mean square error is displayed in command line of MATLAB/Octave. 
