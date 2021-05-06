@@ -53,11 +53,11 @@ Saliency detection is an effective way to determine objects and separate them fr
 
 Saliency detectors have long been used in machine vision systems. There are numerous proposed saliency detectors in scientific journals. Therefore, we are trying to evaluate some of them in function altogether. The saliency detection function provided in our source code, contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument.
 
-Option	Reference	
+Option	      Reference	
 
-1		[4]
+1		      [4]
 
-2		[5]
+2		      [5]
 
 
 Method  1.0:
