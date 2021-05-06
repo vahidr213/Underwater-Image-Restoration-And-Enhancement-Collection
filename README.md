@@ -60,15 +60,15 @@ Option	      Reference
 2		      [5]
 
 
-Method  1.0:
 
-This method is the octave script for paper underwater image restoration based on a new underwater image formation model. The given source code for saliency detection contains a variety of saliency detectors that capables you to choose among different saliency detectors. Saliency detectors can be selected by changing the second input to image saliency function (im_saliency()).
+•	myevaluations(im,imref,method)
 
-This method starts with medium transmission computation of the degraded image. Medium transmission matrix contains values in unity range, showing high values at foreground or non-water regions and low values at background or water regions. Medium transmission computation is computationally low.
+This function holds all the methods and their variants. The first input is the degraded red channel in case you want to measure the mean squared error instead of visual inspection. Since the red channel of the first input is artificially degraded, we can measure the difference between the restored and the reference images. In this case, the reference image must be perfect. Otherwise you can copy the reference/initial image in the first argument to bypass error measurement.
 
+Method 1.0:
 
-Method 1.0
-The work that is done in this Method 1.0 and its variants is described in [1]. This variant can be charted as below:
+The work that is done in this Method 1.0 and its variants is described in [1]. This variant computations process can be charted as below: 
+
 •	Normalized UDCP Medium Transmission Matrix
 
 •	Normalized Saliency Map for UDCP Matrix
