@@ -40,7 +40,9 @@ This function calculates the medium transmission matrix with available methods p
 The first input argument is the input underwater image in unity (0-1) range and double data type. The second argument is the grid size for local patch. The patch will be a square with gs as its length/width. The 3rd argument for medium transmission calculation (e.g. 1 is UDCP and 2 is IATP).
 
 Method:
+
 1	=	UDCP
+
 2	=	IATP
 
 
