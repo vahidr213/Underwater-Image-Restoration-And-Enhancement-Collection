@@ -48,28 +48,51 @@ This method starts with medium transmission computation of the degraded image. M
 Method 1.0
 The work that is done in this Method 1.0 and its variants is described in [1]. This variant can be charted as below:
 •	Normalized UDCP Medium Transmission Matrix
+
 •	Normalized Saliency Map for UDCP Matrix
+
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
+
 •	4-Level Laplacian Pyramid for Normalized UDCP Matrix
+
 •	Normalized IATP Medium Transmission Matrix
+
 •	Normalized Saliency Map for IATP Matrix
+
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
+
 •	4-Level Laplacian Pyramid for Normalized IATP Matrix
+
 •	Multiplying UDCP Saliency Pyramid by UDCP Laplacian Pyramid to Build UDCP Pyramid
+
 •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix + Normalization
+
 •	Scene Depth by Log (Refined UDCP Matrix)/Log (0.8) Eq.16 [1]
+
 •	Final UDCP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
 •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
+
 •	Multiplying IATP Saliency Pyramid by IATP Laplacian Pyramid to Build IATP Pyramid
+
 •	Reconstructing IATP Pyramid to Build Refined IATP Matrix + Normalization
+
 •	Scene Depth by Log (Refined IATP Matrix)/Log (0.8) Eq.16 [1]
+
 •	Final IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
 •	Get Restored Red Channel Intensities with Final IATP Matrix Eq.18 [1]
+
 •	Joint UDCP + IATP Pyramids as Summation of Corresponding Pyramids
+
 •	Reconstructing Joint UDCP + IATP Pyramid to Build Joint UDCP + IATP Matrix + Normalization
+
 •	Scene Depth by Log (Joint UDCP + IATP Matrix)/Log (0.8) Eq.16 [1]
+
 •	Final Joint UDCP + IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
 •	Get Restored Red Channel Intensities with Final Joint UDCP + IATP Matrix Eq.18 [1]
+
 
 
 [1] 	Underwater Image Restoration Based On a New Underwater Image Formation Model
