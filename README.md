@@ -1,123 +1,131 @@
 # A-Collection-Of-Underwater-Image-Restoration-And-Enhancement-With-Mean-Squared-Error-Measuring
+	Introduction
 
-I need to look for an efficient and precise method. The collection of algorithms I've tested so far are gathered together in file myevaluation.m.
-In the following code, "imref" is the initial or almost nearly perfect Image. This variable is the image that is almost Haze and Blur free image which we are going to destruct using medium transmission by the following equation (1).
-I(x) = J(x) t(x)   		(1)
-Where J(x) is the reference image ('imref' var), t(x) is the medium transmission (medtransMat) and I(x) is the red channel degraded image ('im' var).
-We have implemented medium transmissionbased on paper "Underwater Image Restoration Based on A New Underwater Image Formation Model" (equation 10).
-Notice that only red Channel of J(x) is affected by medium transmission.
+Underwater images typically exhibit color distortion and low contrast as a result of the exponential decay that light suffers as it travels. Moreover, colors associated to different wavelengths have different attenuation rates, being the red wavelength the one that attenuates the fastest.
 
-Method  1:
+To restore underwater images, red channel prior is used which is a concept captured from dark channel prior. The Red Channel method can be interpreted as a variant of the Dark Channel method used for images degraded by the atmosphere when exposed to haze.
 
-This method is the octave script for paper underwater image restoration based on a new underwater image formation model. The given source code for saliency detection contains a variety of saliency detectors that capables you to choose among different saliency detectors. Saliency detectors can be selected by changing the second input to image saliency function (im_saliency()).
+The aim of underwater image restoration and enhancement is to improve the visual quality of images captured under different underwater scenes. In recent years, this research area has attracted increased attention since improving the visibility, contrast, and colors of underwater images is of significance for many computer applications. Nevertheless, enhancing and restoring underwater image from a single image is still challenging due to the complicated underwater environment. 
 
-This method starts with medium transmission computation of the degraded image. Medium transmission matrix contains values in unity range, showing high values at foreground or non-water regions and low values at background or water regions. Medium transmission computation is computationally low.
+The received light by a camera suffers from color deviation due to the wavelength dependent light absorption. In general, the red light first disappears with the distance from objects, followed by the orange light, yellow light, purple light, yellow-green light, green light and blue light. This is the main reason why most underwater images are dominated by the bluish or greenish tone. Therefore, to improve the visual quality of underwater image, a method which can remove the effects of back scattering light and wavelength dependent light absorption is needed.
 
+The possibility of improving underwater images by just using image processing techniques is very appealing due to the low cost of implementation when compared with more sophisticated techniques. These methodologies enjoy a wide range of applications, from marine biology and archaeology to ecological research. The improvement of unmanned vehicles (ROV) navigation capabilities is also a very important field of application.
 
+	Methodologies 
 
-Method 2:
+Inspired by the observation that the existing number of open source methodologies on underwater image restoration and enhancement are limited, here we have obtained a combination of a couple of available methods with other proposed methods to weigh each combination whether alone or combined. As others, we were curious to find out the effect of small variants of each main method. 
 
-This method is the reverse order of the method one. The degraded image is first smoothed by bilateral filtering and then compensated by medium transmission equation.
+Therefore, the materials provided here are a survey on underwater restoration and enhancement methods and their variants for researchers and students in order to avoid starting from scratch.
 
+The provided source code is compiled with octave without problem. In case you have MATLAB software, you may possibly need to change some functions with their MATLAB counterparts ( the source code is is mostly compatible with MATLAB).
 
+	Description of functions:
 
-Method 4:
+•	Underwater.m
 
-At first, the input image is smoothed by bilateral filtering. Then, the rest is Method 3.
+If you are using MATLAB you need to comment the 'pkg load image' command (other lines are ok – this is an Octave Command). Then, an underwater image is loaded. You can use any underwater image you have. 
 
-Method 5:
+The process starts with degrading the red channel of the reference image. At this point, medium transmission using UDCP is computed for input underwater image. Then, the red channel of the input image J(x) is multiplied by the medium transmission t(x).
 
-At first, Method 3 is performed then the restored image is smoothed by bilateral filtering.
+I(x) = J(x) t(x)
 
-Method 6:
+The result of the above equation would be an underwater image I(x) that has more haze and greenish/bluish tone. The purpose of doing this is to have a reference red channel and a degraded one in order to calculate mean square error after restoring the degraded red channel. In our case, we have provided a few high quality underwater images where the red channel was perfect (it has wide range of intensities). This way leads to have a reference and a degraded red channel image.
 
-This method only checks wiener deconvolution effect on the degraded red channel. A brief explanation of wiener deconvolution is described below. 
-wiener deconvolution tries to find an estimation for x(t) through Fourier transform. We have used this method to apply minor deburring of underwater images. 
-The wiener deconvolution method requires two initial known parameters that play the most important roles in estimating the deblurred and denoised images. Our intuitive investigations showed that underwater images can be deblurred by choosing the length of blurring as low as 3 to 5. The noise to signal ratio must be lower than 0.1 as well. In our experiments, we chose 3 for blurring length and 0.07 for noise to signal ratio.
-Increasing blurring length or noise to signal ratio above a threshold will cause the image to be more blurred or become darker. Blurring length is a parameter required for building point spread function matrix.
+If you don’t want to degrade your underwater image, just uncomment the line with this command (im(:,:,1) = imref(:,:,1)) to undo what's done so far. If you bypass the degradation, your input image is restored in the next steps as it is. The reason behind this is to be able to calculate mean squared error between the main red channel and the degraded red channel. This way avoids requiring visual inspection of the restored image. Before any restoration, 'underwater.m' calculates the mean squared error between the initial and the degraded red channel as well as printing the MSE at command line. Then, when the restoration process completed, we can compute the MSE to compare the efficiency of the restoration method.
 
-Method 7:
+•	mediumtransmissionMat (im, gs, method)
 
-This method is Method 6 plus a bilateral filtering.
+This function calculates the medium transmission matrix with available methods provided in scientific papers. 
 
-Method 8:
+The first input argument is the input underwater image in unity (0-1) range and double data type. The second argument is the grid size for local patch. The patch will be a square with gs as its length/width. The 3rd argument for medium transmission calculation (e.g. 1 is UDCP and 2 is IATP).
 
-This method starts with a bilateral filtering and then applies the wiener deconvolution.
+Values for 3rd argument:
 
-Method 9:
+1	=	UDCP [2]
 
-This method is the parametric version of the Method 6. In this case, there are two parameters to be tweaked. The first one is the estimated noise to signal ratio that presents the amount of noise that is supposed to be in the image. The second parameter is the length of blurring to be considered.
+2	=	IATP [3]
 
 
-Method 10:
-
-This method is as same as Method 9 (parametric wiener deconvolution) plus a bilateral filtering in each loop iteration.
-
-Method 11:
-
-This is a parametric evaluation that starts with bilateral filtering and then finishes with wiener deconvolution.
-
-Method 12:
-
-This method is based on blending median filtered green and median filtered blue channels with coefficients ‘a’ and ‘b’. The result of blending green and blue channels are added to the red channel to restore the degraded red channel based on the equation below:
+•	saliency_detection(img,method)
 
 
-Ired=Ired + a * Igreen_median + b * Iblue_median
+Saliency detection is an effective way to determine objects and separate them from the background. Machine vision systems extract general purpose saliency as facing unpredictable and innumerable categories of visual patterns. The main idea behind the use of saliency extraction is that it is been experientially found that the salient regions of the medium transmission estimated by IATP or UDCP are relatively accurate.
+
+Saliency detectors have long been used in machine vision systems. There are numerous proposed saliency detectors in scientific journals. Therefore, we are trying to evaluate some of them in function altogether. The saliency detection function provided in our source code, contains a few popular saliency detectors that you can choose them by specifying a number (e.g. 1,2,…) to the 2nd argument.
+
+Option	      Reference	
+
+1		      [4]
+
+2		      [5]
 
 
-This method evaluates different ‘a’ and ‘b’ coefficients in the unity range with an increment step set to 5e-5. Therefore, you can find out the best coefficients that minimizes the mean squared error.
 
-Method 13:
+•	myevaluations(im,imref,method)
 
-This method is the same as Method 12, but a bilateral filtering is applied before median filtering.
+This function holds all the methods and their variants. The first input is the degraded red channel in case you want to measure the mean squared error instead of visual inspection. Since the red channel of the first input is artificially degraded, we can measure the difference between the restored and the reference images. In this case, the reference image must be perfect. Otherwise you can copy the reference/initial image in the first argument to bypass error measurement.
 
-Method 14:
+Method 1.0:
 
-This method is the same as Method 12 plus a bilateral filtering after each median filtering.
+The work that is done in this Method 1.0 and its variants is described in [1]. This variant computations process can be charted as below: 
 
-Method 15:
+•	Normalized UDCP Medium Transmission Matrix
 
-This method chooses all different permutations of 3 functions. These functions are median filtering, bilateral filtering and wiener deconvolution. All 3 above mentioned functions are evaluated under different ranges of their input parameters. In brief, this method is a parametric evaluation of all permutations of the 3 functions that are part of image enhancement tools.
+•	Normalized Saliency Map for UDCP Matrix
 
-Method 16:
+•	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+•	4-Level Laplacian Pyramid for Normalized UDCP Matrix
 
-•	Perona & Malik, Anisotropic Diffusion image smoothing
+•	Normalized IATP Medium Transmission Matrix
 
-•	2-D Median filtering
+•	Normalized Saliency Map for IATP Matrix
 
-•	Bilateral filtering
+•	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
-The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
+•	4-Level Laplacian Pyramid for Normalized IATP Matrix
+
+•	Multiplying UDCP Saliency Pyramid by UDCP Laplacian Pyramid to Build UDCP Pyramid
+
+•	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix + Normalization
+
+•	Scene Depth by Log (Refined UDCP Matrix)/Log (0.8) Eq.16 [1]
+
+•	Final UDCP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+•	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
+
+•	Multiplying IATP Saliency Pyramid by IATP Laplacian Pyramid to Build IATP Pyramid
+
+•	Reconstructing IATP Pyramid to Build Refined IATP Matrix + Normalization
+
+•	Scene Depth by Log (Refined IATP Matrix)/Log (0.8) Eq.16 [1]
+
+•	Final IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+•	Get Restored Red Channel Intensities with Final IATP Matrix Eq.18 [1]
+
+•	Joint UDCP + IATP Pyramids as Summation of Corresponding Pyramids
+
+•	Reconstructing Joint UDCP + IATP Pyramid to Build Joint UDCP + IATP Matrix + Normalization
+
+•	Scene Depth by Log (Joint UDCP + IATP Matrix)/Log (0.8) Eq.16 [1]
+
+•	Final Joint UDCP + IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+•	Get Restored Red Channel Intensities with Final Joint UDCP + IATP Matrix Eq.18 [1]
 
 
-Method 17:
 
-This method is a parametric evaluation of all possible permutations of 3 methods shown below:
+[1] 	Underwater Image Restoration Based On a New Underwater Image Formation Model
 
-•	Perona & Malik, Anisotropic Diffusion image smoothing
+[2]   P. L. J. Drews, Jr., E. R. Nascimento, S. S. C. Botelho, and M. F. M. Campos, ‘‘Underwater depth estimation and image restoration based on single images,’’ IEEE Comput. Graph. Appl., vol. 36, no. 2, pp. 24–35, Mar./Apr. 2016.
 
-•	2-D Median filtering
+[3]   N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice, ‘‘Initial results in underwater single image dehazing,’’ in Proc. IEEE Conf. OCEANS, Sep. 2010, pp. 1–8.
 
-•	Wiener deconvolution
+[4]	http://ivrg.epfl.ch/supplementary_material/RK_CVPR09/index.html
 
-This method evaluates the sequence of the above mentioned functions to produce a better image. You can deliberately change the values of parameters in each method just by changing loop ranges. The mean square error shows the quality of each of sequences functions in estimating the reference image.
-The outputs are the current used parameters (mse , … ) and the best minimum mean square error along with its parameter values are shown in two consequential lines.
-
-
-Method 18:
-
-This method is a parametric evaluation of all possible permutations of 3 methods shown below:
-
-•	Anisotropic Gaussian smoothing
-
-•	Wiener deconvolution
-
-•	2-D median filtering
-
-This method also checks the permutation of 2 functions as well as 3 functions. Therefore, the first 6 permutations are for combination of 3 functions and the other 4 permutations are for 2-function combinations. The variables could also be changed deliberately by your desired ranges.
+[5]	https://www.epfl.ch/labs/ivrl/research/saliency/salient-region-detection-and-segmentation/
 
 
 
@@ -310,546 +318,6 @@ here is myevaluations.m codes:
       disp('using IATP + UDCP medium transmission:')
       disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 
-    %%%%%%%%%%%
-    %%%%%   2
-    im2 = im(:,:,1);
-    method = method + 1;
-      ####Bilateral filtering to enhance edge
-    im2 = im2double( imsmooth ( im2uint8( im2 ) , 'bilateral' ) );
-    im2 = ( im2  .* medtransMat + ( globalBackgLight(1) ) * ( 1 - medtransMat) );
-    mse = immse ( im2uint8(im2) , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-    %%%%%%%%%%
-    %%%%%  3
-    im2 = im(: , : , 1);
-    method = method + 1;
-    minmedtransMat = 0.1 * ones( size(medtransMat) );
-    maxmedtransMat = max(minmedtransMat, medtransMat);
-    im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
-    im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
-    
-    
-    %%%%%%
-    %%%%method 4
-    im2 = im(: , : , 1);
-    method = method + 1;
-    ####Bilateral filtering to enhance edge
-    im2 = im2double( imsmooth ( im2uint8( im2 ) , 'bilateral' ) );
-    minmedtransMat = 0.1 * ones( size(medtransMat) );
-    maxmedtransMat = max(minmedtransMat, medtransMat);
-    im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
-    im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
-    if min( im2(:) ) < 0
-      im2 = im2 + abs(min(im2(:)));
-      im2 = im2 / max( im2(:) );
-    endif
-    if min( im2(:) ) > 0
-      error(['method ', num2str(method), ' min( im2(:) ) is > 0']);
-    endif
-    mse = immse ( im2uint8(im2) , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-
-    %%%%%%
-    %%%%method 5
-    im2 = im(: , : , 1);
-    method = method + 1;
-    minmedtransMat = 0.1 * ones( size(medtransMat) );
-    maxmedtransMat = max(minmedtransMat, medtransMat);
-    im2 = ( im2 - globalBackgLight(1) ) ./ maxmedtransMat;
-    im2 = im2 + globalBackgLight(1) * ( 1 - globalBackgLight(1) );
-    if min( im2(:) ) < 0
-      im2 = im2 + abs(min(im2(:)));
-      im2 = im2 / max( im2(:) );
-    endif
-    if min( im2(:) ) > 0
-      error(['method ', num2str(method), ' min( im2(:) ) is > 0']);
-    endif
-    ####Bilateral filtering to enhance edge
-    im2u = imsmooth ( im2uint8( im2 ) , 'bilateral' );
-    mse = immse ( im2u , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-    
-    %%%%%%
-    %%%% method 6
-    im2 = im(: , : , 1);
-    method = method + 1;
-    psf = fspecial ("motion", 3, 0);
-    estimated_nsr = 0.07;
-    im2 = deconvwnr (im2, psf, estimated_nsr);
-    mse = immse ( im2uint8(im2) , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-
-    %%%%%%
-    %%%% method 7
-    im2 = im(: , : , 1);
-    method = method + 1;
-    psf = fspecial ("motion", 3, 0);
-    estimated_nsr = 0.07;
-    im2 = deconvwnr (im2, psf, estimated_nsr);
-    %%%% bilateral filtering
-    im2u = imsmooth ( im2uint8( im2 ) , 'bilateral' );
-    mse = immse ( im2u , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-
-    %%%%%%
-    %%%% method 8
-    im2 = im(: , : , 1);
-    method = method + 1;
-    im2 = im2double( imsmooth ( im2uint8( im2 ) , 'bilateral' ) );
-    psf = fspecial ("motion", 3, 0);
-    estimated_nsr = 0.07;
-    im2 = deconvwnr (im2, psf, estimated_nsr);
-    %%%% bilateral filtering
-    mse = immse ( im2uint8(im2)  , imref (:,:,1) );
-    disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-    %%%%%%
-    %%%% method 9
-    method = method + 1;
-    for estimated_nsr = 0.01:0.01:0.1
-      for motion = 2:10
-        im2 = im(: , : , 1);
-        psf = fspecial ("motion", motion, 0);
-        im2 = deconvwnr (im2, psf, estimated_nsr);
-        mse = immse ( im2uint8(im2) , imref (:,:,1) );
-        disp ( ' (NSR,Motion)=' );
-        disp ( [ estimated_nsr , motion ] ) ;
-        disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-      endfor
-    endfor
-
-    %%%%%%
-    %%%% method 10
-    method = method + 1;
-    for estimated_nsr = 0.01:0.01:0.1
-      for motion = 2:10
-        im2 = im(: , : , 1);
-        psf = fspecial ("motion", motion, 0);
-        im2 = deconvwnr (im2, psf, estimated_nsr);
-        %%%% bilateral filtering
-        im2 = imsmooth ( im2 , 'bilateral' );
-        mse = immse ( im2uint8( im2 ), imref (:,:,1) );
-        disp ( ' (NSR,Motion)=' );
-        disp ( [ estimated_nsr , motion ] ) ;
-        disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-      endfor
-    endfor
-
-
-    %%%%%%
-    %%%% method 11
-    method = method + 1;
-    for estimated_nsr = 0.01:0.01:0.1
-      for motion = 2:10
-        im2 = im(: , : , 1);
-        %%%% bilateral filtering
-        im2 = imsmooth ( im2 , 'bilateral' );
-        psf = fspecial ("motion", motion, 0);
-        im2 = deconvwnr (im2, psf, estimated_nsr);    
-        mse = immse ( im2uint8( im2 ), imref (:,:,1) );
-        disp ( ' (NSR,Motion)=' );
-        disp ( [ estimated_nsr , motion ] ) ;
-        disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-      endfor
-    endfor
-    
-
-        %%%%%
-    %%% method 12
-    method = method + 1;
-    minmse=1e6;
-    abest=0.0;
-    bbest=0.0;
-    for a = 5e-5:5e-5:1
-      for b = 5e-5:5e-5:1
-      im2=im(:,:,1)+a*medfilt2(im(:,:,2),[3,3])+b*...
-      medfilt2(im(:,:,3),[3,3]);
-      im2=im2/max(im2(:));
-      mse = immse ( im2uint8(im2) , imref (:,:,1) );
-      if mse < minmse
-        minmse = mse;
-        abest = a;
-        bbest = b;
-      endif
-
-      disp('a, b, mse, best a, best b, min mse:');
-      printf('%.5f   %.5f  %.3f  %.5f  %.5f %.3f\n',a,b,mse,abest,bbest,minmse);
-    endfor
-    endfor
-
-    %%%%%
-    %%% method 13
-    method = method + 1;
-    for gs = 3:15
-      im2 = im(: , : , 1);
-      im2 = imsmooth ( im2 , 'bilateral' );
-      im2 = medfilt2( im2 , [gs,gs] );
-      mse = immse ( im2uint8(im2) , imref (:,:,1) );
-      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
-      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-    endfor
-
-    %%% method 14
-    method = method + 1;
-    for gs = 3:15
-      im2 = im(: , : , 1);  
-      im2 = medfilt2( im2 , [gs,gs] );
-      im2 = imsmooth ( im2 , 'bilateral' );
-      mse = immse ( im2uint8(im2) , imref (:,:,1) );
-      disp ( [' Grid Size = ' , num2str(gs) , ':']);    
-      disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-    endfor
-
-
-    %%% method 15
-    method = method + 1;
-    for sigmaR = 5/255 : 5/255 : 20/255
-      for sigmaD = 1 : 6
-        for gs = 2 : 10
-          for estimated_nsr = 0.01:0.01:0.1
-            for motion = 2:10
-    %%%          permutation 1
-              im2 = im(: , : , 1);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = medfilt2( im2 , [gs gs] );
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-              %%%          permutation 2
-              im2 = im(: , : , 1);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              im2 = medfilt2( im2 , [gs gs] );          
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-              %%%          permutation 3
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);          
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-              %%%          permutation 4
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);          
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-
-              %%%          permutation 5
-              im2 = im(: , : , 1);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);          
-              im2 = medfilt2( im2 , [gs gs] );
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);          
-
-              %%%          permutation 
-              im2 = im(: , : , 1);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              im2 = medfilt2( im2 , [gs gs] );
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);                    
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              disp ( ' (sigmaR , sigmaD , gs , estimated_nsr , motion ) =' );
-              disp ( [ sigmaR , sigmaD , gs , estimated_nsr , motion ] ) ;
-              disp(['method ', num2str(method), ' mse is:    ',num2str(mse)]);
-            endfor
-          endfor
-        endfor
-      endfor
-    endfor
-
-
-    %%% method 16
-    method = method + 1;
-    minmse = 1e6;
-    permmin = [0,0,0,0,0,0,0,0];
-    for sigmaR = 5/255 : 5/255 : 20/255
-      for sigmaD = 1 : 6
-        for gs = 2 : 10
-          for peronaIteration = 1:2
-            for lambda = 0.1:0.15:0.25
-    %%%          permutation 1          
-              permutation = 1;
-              im2 = im(: , : , 1);          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = medfilt2( im2 , [gs gs] );
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );          
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-
-              %%%          permutation 2
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              im2 = medfilt2( im2 , [gs gs] );          
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 3
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 4
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 5
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = medfilt2( im2 , [gs gs] );
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 6
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = imsmooth ( im2 , 'bilateral' , sigmaD , sigmaR);
-              im2 = medfilt2( im2 , [gs gs] );          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, sigmaR , sigmaD , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-            endfor
-          endfor
-        endfor
-      endfor
-    endfor
-
-
-
-    %%% method 17
-    method = 17;
-    minmse = 1e6;
-    permmin = [0,0,0,0,0,0,0,0];
-    for estimated_nsr = 0.005:0.005:0.015
-      for motion = 2:5
-        for gs = 2 : 10
-          for peronaIteration = 1:2
-            for lambda = 0.1:0.15:0.25
-    %%%          permutation 1          
-              permutation = 1;
-              im2 = im(: , : , 1);          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = medfilt2( im2 , [gs gs] );
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );          
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-
-              %%%          permutation 2
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = medfilt2( im2 , [gs gs] );          
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 3
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 4
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              im2 = medfilt2( im2 , [gs gs] );
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 5
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              im2 = medfilt2( im2 , [gs gs] );
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-              %%%          permutation 6
-              permutation = permutation + 1;
-              im2 = im(: , : , 1);
-              psf = fspecial ("motion", motion, 0);
-              im2 = deconvwnr (im2, psf, estimated_nsr);
-              im2 = medfilt2( im2 , [gs gs] );          
-              im2 = imsmooth (im2, 'Perona & Malik', peronaIteration, lambda);
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [permutation, method, mse, estimated_nsr , motion , gs , peronaIteration, lambda];
-              endif
-              disp ( '(permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda ) =' );
-              disp ( [ permutation, method, mse, estimated_nsr , motion , gs , peronaIteration , lambda]) ;
-              disp ( permmin );
-
-            endfor
-          endfor
-        endfor
-      endfor
-    endfor
-
-
-    %%%%% method 18
-    %%%%%% v1=lambda1=lambda2 for Gaussian
-    %%%%%% v2 = estimated_nsr
-    %%%%%% v3 = motion
-    %%%%%% v4 = grid size
-    method = 18;
-    minmse = 1e6;
-    funorder=perms([1 2 3]);
-    funorder2=cat(1,perms([1 2]),perms([1 3]),perms([2,3]));
-    funorder3=cat(2,funorder2,[0;0;0;0;0;0]);
-    funorder=cat(1,funorder,funorder3);
-    for v1=1:3
-      for v2=0.005:0.005:0.02
-        for v3=1:3
-          for v4=3:2:5
-            for i=1:size(funorder,1)
-              im2=im(:,:,1);
-              for j=1:size(funorder,2)
-                if funorder(i,j)==1
-                  im2=imsmooth(im2,'custom gaussian',v1,v1);
-                elseif funorder(i,j)==2
-                  psf=fspecial('motion',v3);
-                  im2=deconvwnr(im2,psf,v2);
-                elseif funorder(i,j)==3
-                  im2=medfilt2(im2,[v4,v4]);
-                endif
-              endfor % j
-              mse = immse ( im2uint8(im2) , imref (:,:,1) );
-              if mse < minmse
-                minmse = mse;
-                permmin = [i, method, mse, v1, v2, v3, v4];
-              endif
-              disp ( '(permutation, method, mse, v1, v2, v3, v4) =' );
-              printf ('%.3f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f\n',i, method, mse, v1,v2,v3,v4) ;
-              printf( '%.3f  %.3f  %.3f  %.3f  %.3f  %.3f  %.3f\n',permmin(1),permmin(2),permmin(3),permmin(4),permmin(5),permmin(6),permmin(7) );
-
-            endfor % i
-          endfor % v4
-        endfor % v3
-      endfor % v2
-    endfor % v1
-
-
-    end
     
 
 definition of im_unity.m
