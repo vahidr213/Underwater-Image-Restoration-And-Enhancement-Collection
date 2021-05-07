@@ -1,4 +1,4 @@
-function sm = saliency_detection(img,method)
+function sm = saliency_detection(im,method)
 %%% img must be uint8
 %%% sm is double 0-1
     if method == 1
@@ -31,7 +31,7 @@ function sm = saliency_detection(img,method)
 % Read image and blur it with a 3x3 or 5x5 Gaussian filter
 %---------------------------------------------------------
 %img = imread('input_image.jpg');%Provide input image path
-gfrgb = imfilter(img, fspecial('gaussian', 3, 3), 'symmetric', 'conv');
+gfrgb = imfilter(im, fspecial('gaussian', 3, 3), 'symmetric', 'conv');
 %---------------------------------------------------------
 % Perform sRGB to CIE Lab color space conversion (using D65)
 %---------------------------------------------------------
@@ -74,7 +74,7 @@ elseif method == 2
     %---------------------------------------------------------
     % Perform sRGB to CIE Lab color space conversion (using D65)
     %---------------------------------------------------------
-    imglab = rgb2lab(img);
+    imglab = rgb2lab(im);
     l = double(imglab(:,:,1));
     a = double(imglab(:,:,2));
     b = double(imglab(:,:,3));

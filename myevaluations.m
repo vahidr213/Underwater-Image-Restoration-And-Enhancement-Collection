@@ -9,7 +9,7 @@ gs = 3;
 %%% % % calculate medium transmission for degraded picture
 [medtransMat, globalBackgLight] =  mediumtransmissionMat (im, gs, 1);% 1=UDCP
 medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);% make a 3 channel
-saliencymap = saliency_detection(medtransMat3,1);
+saliencymap = saliency_detection(im2uint8(medtransMat3),1);
 
 %%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
 %%%%%%the below code supports both gray and 3D images
