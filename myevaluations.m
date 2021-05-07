@@ -1,7 +1,7 @@
 function  [im2] = myevaluations(im,imref,method)
 % im is normalized 0-1
 % imref is uint8
-
+prefixaddress='I:\'
 %%%%%%%%%%%
 if method == 1.0;
 
@@ -63,10 +63,14 @@ im2=im_unity(im2);
 mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
 imrestored=im;% restored image 3 channel
 imrestored(:,:,1)=im2;% assign new restored red channel
+resfilename=sprintf('method %.2f restored vs original - UDCP',method);
 disp('');
 disp('using UDCP medium transmission:');
 disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-figure('name','restored vs original - UDCP'),imshow(cat(2, im2uint8(imrestored), imref ));
+figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
+resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename)
+imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
+
 
 finalmedtransMat=pyramid_reconstruct(finalmedtransPyr2);
 finalmedtransMat=im_unity(finalmedtransMat);
@@ -76,11 +80,14 @@ im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(fi
 im2=im_unity(im2);
 imrestored=im;% restored image 3 channel
 imrestored(:,:,1)=im2;% assign new restored red channel
+resfilename=sprintf('method %.2f restored vs original - IATP',method);
 mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
 disp('');
 disp('using IATP medium transmission:');
 disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-figure('name','restored vs original - IATP'),imshow(cat(2, im2uint8(imrestored), imref ));
+figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
+resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename)
+imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 % %%%%%% combining 2 final medium transmission pyramids into one
 for i=1:num_levels
@@ -94,11 +101,14 @@ im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(fi
 im2=im_unity(im2);
 imrestored=im;% restored image 3 channel
 imrestored(:,:,1)=im2;% assign new restored red channel
+resfilename=sprintf('method %.2f restored vs original - UDCP+IATP',method);
 mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
 disp('');
 disp('using IATP + UDCP medium transmission:')
 disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-figure('name','restored vs original - UDCP+IATP'),imshow(cat(2, im2uint8(imrestored), imref ));
+figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
+resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename)
+imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 
 
