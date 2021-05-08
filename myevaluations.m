@@ -45,5 +45,13 @@ elseif method == 3.00
   resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
 
+elseif method == 4.00
+  cd('./04.00/');
+  % imrestored = im2uint8( ALTM_Retinex(im) );
+  AtmLight(framenum)
+  % resfilename=sprintf('method %.2f ALTM Retinex restored vs original',method);
+  % resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  % imwrite(cat(2, imrestored, imref ) , resfilename);
+
 endif % if method
 end

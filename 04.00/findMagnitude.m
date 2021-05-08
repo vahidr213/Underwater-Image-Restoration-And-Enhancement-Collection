@@ -17,8 +17,8 @@ end
 withoutA = I-aPart;
 withoutA(withoutA<0)=0;
 if(showFigures)
-    figure, imagesc(alpha),colormap gray, axis image, truesize;
-    figure, imagesc(withoutA), axis image, truesize;
+    figure, imagesc(alpha)%,colormap gray, axis image, truesize;
+    figure, imagesc(withoutA)%, axis image, truesize;
 end
 
 disp('calc l*...')
@@ -78,7 +78,7 @@ if(showFigures)
     all = all - all(1);
     L = L/all(round(w*h*c*0.9999));
     L(L>1) = 1;
-    figure,imagesc(L),axis image, truesize;
+    figure,imagesc(L)%,axis image, truesize;
 end
 
 end

@@ -10,11 +10,11 @@ if  mxSize<600
     I(I>1) = 1;
 end
 if(showFigures)
-    figure, imagesc(I), axis image, truesize;
+    figure, imagesc(I)%, axis image, truesize;
 end
-%gray = rgb2gray(I);
+gray = rgb2gray(I);
 % detect the edge, canny operator
-%edges = edge(gray,'canny',0.1);
+edges = edge(gray,'canny',0.1);
 %if(showFigures)
 %    figure, imagesc(edges), axis image, truesize;
 %end
