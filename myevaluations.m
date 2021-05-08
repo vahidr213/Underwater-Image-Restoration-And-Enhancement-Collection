@@ -1,4 +1,4 @@
-function  [im2] = myevaluations(im,imref,method,framenum)
+function  myevaluations(im,imref,method,framenum)
 % im is normalized 0-1
 % imref is uint8
 prefixaddress='I:\';
@@ -18,19 +18,32 @@ elseif method == 2.00
     reply=input('you can run its approximate Octave version in method 02.01. do you proceed:0/1?');
     if ( reply == 1)
       cd('./02.01/');
-      main(framenum);
+      imrestored=main(framenum);
+      resfilename=sprintf('method %.2f restored vs original',method);
+      resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+      imwrite(cat(2, imrestored, imref ) , resfilename);
     endif
   else% for matlab
     cd('./02.00/');
-    main(framenum);
+    imrestored=main(framenum);
+    resfilename=sprintf('method %.2f restored vs original',method);
     resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
-    imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
+    imwrite(cat(2, imrestored, imref ) , resfilename);
 
   endif
 elseif method == 2.01
   cd('./02.01/');
-  main(framenum);
-  % cd(pwd0)
+  imrestored = main(framenum);
+  resfilename=sprintf('method %.2f restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
+elseif method == 3.00
+  % Adaptive Local Tone Mapping Based on Retinex for HDR Image
+  cd('./03.00/');
+  imrestored = im2uint8( ALTM_Retinex(im) );
+  resfilename=sprintf('method %.2f ALTM Retinex restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
 
 endif % if method
 end

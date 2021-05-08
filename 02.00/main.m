@@ -1,4 +1,4 @@
-function outputimage=main(num)
+function imrestored=main(num)
 img = load_image(num);
 %[meanRG, deltaRG, meanYB, deltaYB, uicm] = UICM(img)
 % white balance
@@ -92,3 +92,4 @@ fusion = cat(3, uint8(R), uint8(G), uint8(B));
 %[meanRG, deltaRG, meanYB, deltaYB, uicm] = UICM(fusion)
 %imshow([img1, img2, fusion])
 figure, imshow([img, fusion])
+imrestored = fusion;
