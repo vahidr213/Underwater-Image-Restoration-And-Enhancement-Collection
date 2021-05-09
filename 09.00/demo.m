@@ -1,12 +1,15 @@
 % =========================================================================
 %% Deep Lowlight image enhancement %%
 % =========================================================================
-close all;clear all;clc
+function demo(frame)
+
 addpath(genpath('.'));
 r=1.7;
 %% read image
-[fn,pn,fi]=uigetfile('*.bmp;*.jpg;*.png;*.tif','select image');
-im=imread([pn fn]);
+% [fn,pn,fi]=uigetfile('*.bmp;*.jpg;*.png;*.tif','select image');
+% im=imread([pn fn]);
+fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
+im=imread(fileNameDataSet);
 figure,imshow(im),title('input');
 IM=im2double(im);
 [height,width,channel]=size(IM);
@@ -37,3 +40,4 @@ new(:,:,2)=LB(:,:,2)./(map);
 new(:,:,3)=LB(:,:,3)./(map);
 figure,imshow(abs(new),[]),title('enhanced');
 
+end

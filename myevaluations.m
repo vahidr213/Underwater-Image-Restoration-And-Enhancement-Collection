@@ -74,6 +74,9 @@ elseif method == 8.00
 elseif method == 8.01
   cd('./08.01/');
   main();
+elseif method == 9.00
+  cd('./09.00/');
+  demo(framenum);
 
 endif % if method
 end

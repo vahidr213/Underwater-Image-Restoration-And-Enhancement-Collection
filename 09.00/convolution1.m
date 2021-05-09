@@ -1,4 +1,4 @@
-function [ output_data ] = convolution(input_data, weights_conv, biases_conv)
+function [ output_data ] = convolution1(input_data, weights_conv, biases_conv)
 %CONVOLUTION Summary of this function goes here
 %   Detailed explanation goes here
 weights_conv=double(weights_conv);
