@@ -61,8 +61,19 @@ elseif method == 6.00
   Proposed_Retinex();
 elseif method == 6.01
   cd('./06.01/');
-  pwd
   Proposed_Retinex();
+elseif method == 7.00
+  cd('./07.00/');
+  demo()
+  demo2()
+  demo_each_channel1()
+  demo_each_channel2()
+elseif method == 8.00
+  cd('./08.00/');
+  main();
+elseif method == 8.01
+  cd('./08.01/');
+  main();
 
 endif % if method
 end

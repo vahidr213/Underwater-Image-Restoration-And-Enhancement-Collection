@@ -1,0 +1,3 @@
+Optimized Contrast Enhancement for Real-time Image and Video Dehazing
+
+https://github.com/IsaacChanghau/OptimizedImageEnhance/tree/master/matlab/OptimizedContrastEnhance

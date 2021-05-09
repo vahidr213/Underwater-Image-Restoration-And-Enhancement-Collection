@@ -60,12 +60,12 @@ end
 
 %*************************Processing the LF signal*************************
 Imag = sqrt(-1);
-for s = 1 : 2
-    C = w{J + 1}{1}{s} + Imag * w{J + 1}{2}{s};
-    wout = altm_method(C);
-    w{J+1}{1}{s} = real(wout);
-    w{J+1}{2}{s} = imag(wout);
-end
+% for s = 1 : 2
+%     C = w{J + 1}{1}{s} + Imag * w{J + 1}{2}{s};
+%     wout = altm_method(C);
+%     w{J+1}{1}{s} = real(wout);
+%     w{J+1}{2}{s} = imag(wout);
+% end
 
 %**************************Inverse transformation**************************
 V = icplxdual2D(w, J, Fsf, sf);
