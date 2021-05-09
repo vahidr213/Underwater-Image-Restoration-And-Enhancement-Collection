@@ -53,5 +53,16 @@ elseif method == 4.00
   % resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
   % imwrite(cat(2, imrestored, imref ) , resfilename);
 
+elseif method == 5.0
+  cd('./05.00/');
+  ex_darkchannel_guildfilter();
+elseif method == 6.00
+  cd('./06.00/');
+  Proposed_Retinex();
+elseif method == 6.01
+  cd('./06.01/');
+  pwd
+  Proposed_Retinex();
+
 endif % if method
 end

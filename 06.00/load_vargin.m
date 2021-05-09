@@ -1,0 +1,16 @@
+function vargin = load_vargin
+vargin{1} = 'sneaker.png';
+vargin{2} = 'liahthouse.png';
+vargin{3} = 'iris.png';
+vargin{4} = 'whitehouse.png';
+vargin{5} = 'horses.png';
+vargin{6} = 'ceiling.png';
+vargin{7} = 'cathedral.png';
+vargin{8} = 'lilv.png';
+vargin{9} = 'lena.png';
+vargin{10} = 'ferrari.png';
+vargin{11} = 'creek.png';
+vargin{12} = 'livingroom.png';
+vargin{13} = 'house.png';
+vargin{14} = 'lion.png';
+vargin{15} = 'mans.jpg';

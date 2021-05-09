@@ -4,7 +4,7 @@ close all
 kenlRatio = 0.01;
 minAtomsLight = 240;
 %image_name =  'test1.jpg';
-image_name =  'images/canon3.bmp';
+image_name=sprintf('D:/RefPic/water (%d).png',5);% image filename
 img=imread(image_name);
 figure,imshow(uint8(img)), title('src');
 sz=size(img);
