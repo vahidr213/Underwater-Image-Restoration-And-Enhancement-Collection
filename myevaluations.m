@@ -69,8 +69,13 @@ elseif method == 7.00
   demo_each_channel1()
   demo_each_channel2()
 elseif method == 8.00
-  cd('./08.00/');
-  main();
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./08.00/');
+    main();
+  endif
+  
 elseif method == 8.01
   cd('./08.01/');
   main();
@@ -93,6 +98,11 @@ elseif method == 11.00
     code();
   endif
   
-
+elseif method ==12.00
+  cd('./12.00/');
+  main_underwater_restoration();
+elseif method ==12.01
+  cd('./12.01/');
+  main_underwater_restoration();  
 endif % if method
 end

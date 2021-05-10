@@ -21,7 +21,7 @@ disp(['mse bw ref image and degraded image is:    ',num2str(mse)]);
 %%%%%%%%%%% 
 im(:,:,1)=im2double(imref(:,:,1));
 tic
-myevaluations(im,imref,11.00,frame);
+myevaluations(im,imref,12.01,frame);
 % mse = immse (im2(:,:,1) , imref (:,:,1) );
 % disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 % figure('name','restored vs original'),imshow(cat(2, im2, imref));
