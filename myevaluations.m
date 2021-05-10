@@ -77,6 +77,22 @@ elseif method == 8.01
 elseif method == 9.00
   cd('./09.00/');
   demo(framenum);
+elseif method == 10.00
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./10.00/');
+    correction_gui();
+  endif
+  
+elseif method == 11.00
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./11.00/');
+    code();
+  endif
+  
 
 endif % if method
 end
