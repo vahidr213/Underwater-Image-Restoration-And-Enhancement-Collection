@@ -1,8 +1,7 @@
-clc,clear
+function J = demo_each_channel1(num,inpath)
 %load image
-frame = 5;
-fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
-img = imread(fileNameDataSet);
+path=sprintf('%swater (%d).png',inpath,num);% image filename
+img = imread(path);
 img = double(img);
 [m, n, ~] = size(img);
 %**********************find the airlight**********************

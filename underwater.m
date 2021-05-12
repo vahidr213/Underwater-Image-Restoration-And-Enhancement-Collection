@@ -1,6 +1,8 @@
 clc;clear all;close all
 pkg load image % comment this line if using Matlab
 pkg load signal
+inpath = 'D:\RefPic\';%path for reading image
+outpath = 'I:\';% path for saving result
 frame = 5;%suffix for reading frame
 fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
 imref = imread(fileNameDataSet);% reference image
@@ -17,11 +19,10 @@ cd(pwd0);
 im( : , : , 1) = im( : , : , 1)  .* medtransMat ;
 mse = immse ( im2uint8( im(:,:,1) ) , imref (:,:,1) );
 disp(['mse bw ref image and degraded image is:    ',num2str(mse)]);
-%%figure,imshow(cat(2,im2uint8(im),imref))
 %%%%%%%%%%% 
 im(:,:,1)=im2double(imref(:,:,1));
 tic
-myevaluations(im,imref,12.01,frame);
+myevaluations(im,imref,9.00,frame,inpath,outpath);
 % mse = immse (im2(:,:,1) , imref (:,:,1) );
 % disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 % figure('name','restored vs original'),imshow(cat(2, im2, imref));

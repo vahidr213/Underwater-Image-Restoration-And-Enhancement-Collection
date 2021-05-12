@@ -1,15 +1,15 @@
 % =========================================================================
 %% Deep Lowlight image enhancement %%
 % =========================================================================
-function demo(frame)
+function imrestored = demo(num,inpath)
 
 addpath(genpath('.'));
 r=1.7;
 %% read image
 % [fn,pn,fi]=uigetfile('*.bmp;*.jpg;*.png;*.tif','select image');
 % im=imread([pn fn]);
-fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
-im=imread(fileNameDataSet);
+path=sprintf('%swater (%d).png',inpath,num);% image filename
+im=imread(path);
 figure,imshow(im),title('input');
 IM=im2double(im);
 [height,width,channel]=size(IM);
@@ -38,6 +38,7 @@ map = guidedfilter(IM(:,:,1), p, batch_size, eps);
 new(:,:,1)=LB(:,:,1)./(map);
 new(:,:,2)=LB(:,:,2)./(map);
 new(:,:,3)=LB(:,:,3)./(map);
+new = abs(new);
 figure,imshow(abs(new),[]),title('enhanced');
-
+imrestored = im2uint8(new);
 end

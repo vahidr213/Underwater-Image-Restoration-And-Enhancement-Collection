@@ -1,7 +1,7 @@
-function  main(im,imref,method)
+function  main(im,imref,method,prefixaddress)
 % im is normalized 0-1
 % imref is uint8
-prefixaddress='I:\';
+% prefixaddress='I:\';
 %%%%%%%%%%%
   % Since Laplacian pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
   printf('\nmethod %.2f\n',method);

@@ -1,4 +1,4 @@
-function [ mag,alpha ] = findMagnitude( I, A, showFigures )
+function [ mag,alpha,L ] = findMagnitude( I, A, showFigures )
 
 [h w c] = size(I);
 A3 = reshape(A,1,1,3);
@@ -79,6 +79,7 @@ if(showFigures)
     L = L/all(round(w*h*c*0.9999));
     L(L>1) = 1;
     figure,imagesc(L)%,axis image, truesize;
+    
 end
 
 end

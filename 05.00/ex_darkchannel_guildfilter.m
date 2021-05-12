@@ -1,10 +1,8 @@
-clc
-clear all
-close all
+function J=ex_darkchannel_guildfilter(num,inpath)
 kenlRatio = 0.01;
 minAtomsLight = 240;
 %image_name =  'test1.jpg';
-image_name=sprintf('D:/RefPic/water (%d).png',5);% image filename
+image_name=sprintf('%swater (%d).png',inpath,num);% image filename
 img=imread(image_name);
 figure,imshow(uint8(img)), title('src');
 sz=size(img);
@@ -50,5 +48,6 @@ J(:,:,3) = (img_d(:,:,3) - (1-t_d)*A)./t_d;
 img_d(1,3,1);
 %imwrite(uint8(J),'c:\11.bmp');
 figure,imshow(uint8(J)), title('J_guild_filter');
+J=uint8(J);
 %----------------------------------
-%imwrite(uint8(J), ['_', image_name])
+% imwrite(uint8(J), ['_', image_name])

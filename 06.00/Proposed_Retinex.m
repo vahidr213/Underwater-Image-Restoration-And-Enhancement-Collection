@@ -1,3 +1,4 @@
+function Proposed_Retinex(num,inpath,outpath,method)
 %clc,
 %clear,
 %****************************add the folder path***************************
@@ -13,8 +14,8 @@ addpath(genpath('PyrTools'));
 %I = image_load(vargin{2});
 %vargin = 'liahthouse.png';
 %I = image_load(vargin);
-vargin=sprintf('D:/RefPic/water (%d).png',5);% image filename
-I = imread(vargin);
+path=sprintf('%swater (%d).png',inpath,num);% image filename
+I = imread(path);
 %I=image_load(vargin);
 %vargin='greenwich-reference.png';
 %ref=image_load(vargin);
@@ -74,7 +75,12 @@ rgb = hsv2rgb(hsv);
 %figure,imshow(rgb)
 rgb = adjustment(rgb,I);
 imshow([I,uint8(rgb*255)])
-imwrite(uint8(rgb*255),'proposed.png');
+% imwrite(uint8(rgb*255),'proposed.png');
+imrestored = uint8(rgb*255);
+resfilename=sprintf('method %.2f Retinex restored vs original',method);
+resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+imwrite(cat(2, imrestored, I ) , resfilename);
+
 %PSNR = psnr(uint8(rgb*255), uint8(ref))
 %[SSIMVAL, ~] = ssim(uint8(rgb*255), uint8(ref))
 %[FSIM, ~] = FeatureSIM(uint8(ref), uint8(rgb*255))

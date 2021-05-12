@@ -1,10 +1,9 @@
-
+function J = demo(num,inpath)
 %load image
 %num = 37; % 57,51,50,47,36,37,38
 %img = double(load_image(num));
-frame = 5;
-fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
-img = imread(fileNameDataSet);
+path=sprintf('%swater (%d).png',inpath,num);% image filename
+img = imread(path);
 img = double(img);
 img = SimplestColorBalance(img);
 %figure,imshow(uint8(img))

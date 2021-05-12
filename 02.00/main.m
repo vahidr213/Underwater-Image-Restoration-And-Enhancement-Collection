@@ -1,5 +1,5 @@
-function imrestored=main(num)
-img = load_image(num);
+function imrestored=main(num,inpath)
+img = load_image(num,inpath);
 %[meanRG, deltaRG, meanYB, deltaYB, uicm] = UICM(img)
 % white balance
 %img1 = white_balance(img);

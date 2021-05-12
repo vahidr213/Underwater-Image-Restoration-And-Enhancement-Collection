@@ -1,4 +1,4 @@
-
+function Fusion = main(num,inpath)
 % parameters for finding the airlight
 blksz = 5 * 5;
 showFigure = false;
@@ -10,7 +10,7 @@ r = 150;
 eps = 10^-6;
 
 % load the images
-img = loadImage(5); % 10,57,47,45,37,51,50,39,36,32,20,4,101,102
+img = loadImage(num,inpath); % 10,57,47,45,37,51,50,39,36,32,20,4,101,102
 
 [RL,AL] = imgDecomposition(double(img) / 255);
 

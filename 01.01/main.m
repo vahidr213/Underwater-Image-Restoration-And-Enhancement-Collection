@@ -1,7 +1,7 @@
-function  main(im,imref,method)
+function  main(im,imref,method,prefixaddress)
 % im is normalized 0-1
 % imref is uint8
-prefixaddress='I:\';
+% prefixaddress='I:\';
 %%%%%%%%%%%
 
 printf('\nmethod %.2f\n',method);
