@@ -132,5 +132,14 @@ elseif method ==12.01
   resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
 
+elseif method == 13.01
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./13.01/')
+    imrestored=main_underwater_restoration(framenum,inpath,outpath);
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    imwrite(cat(2, imrestored, imref ) , resfilename);
+  endif
 endif % if method
 end
