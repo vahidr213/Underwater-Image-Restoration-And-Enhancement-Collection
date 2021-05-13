@@ -98,8 +98,11 @@ elseif method == 10.00
   if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
     disp('this method requires Matlab.')
   else
+    % this method requires reference images
     cd('./10.00/');
-    correction_gui();
+    imrestored=correction_gui();
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    imwrite(cat(2, imrestored, imref ) , resfilename);
   endif
   
 elseif method == 11.00
@@ -107,14 +110,27 @@ elseif method == 11.00
     disp('this method requires Matlab.')
   else
     cd('./11.00/');
-    code();
+    imrestored=main(framenum,inpath);
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    imwrite(cat(2, imrestored, imref ) , resfilename);
   endif
   
 elseif method ==12.00
-  cd('./12.00/');
-  main_underwater_restoration();
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./12.00/');
+    imrestored=demo(framenum,inpath,outpath,method);
+    resfilename=sprintf('method %.2f restored vs original',method);
+    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+    imwrite(cat(2, imrestored, imref ) , resfilename);
+
+  endif
 elseif method ==12.01
-  cd('./12.01/');
-  main_underwater_restoration();  
+  cd('./12.01/');  
+  imrestored=demo(framenum,inpath,outpath,method);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
+
 endif % if method
 end

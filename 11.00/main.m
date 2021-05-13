@@ -1,11 +1,11 @@
+function imrestored=main(num,inpath)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%DIP-Assignment%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Image input
 % We take a RGB image as input and convert it to grayscale and store it in
 % another variable, so we can get the mean luminance.
-frame = 5;%suffix for reading frame
-fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
-rgbImage=imread(fileNameDataSet);
+path=sprintf('%swater (%d).png',inpath,num);% image filename
+rgbImage=imread(path);
 rgbImage=im2double(rgbImage);
 grayImage = rgb2gray(rgbImage); 
 %% White Balancing
@@ -81,3 +81,4 @@ title('Original');
 subplot(122);
 imshow((histeq(XFUS)));
 title('IV. Wavelet fusion');
+imrestored = histeq(XFUS);

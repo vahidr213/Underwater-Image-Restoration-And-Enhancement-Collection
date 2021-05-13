@@ -3,6 +3,7 @@ pkg load image % comment this line if using Matlab
 pkg load signal
 inpath = 'D:\RefPic\';%path for reading image
 outpath = 'I:\';% path for saving result
+warning('off', 'all')% suppress all warnings
 frame = 5;%suffix for reading frame
 fileNameDataSet=sprintf('D:/RefPic/water (%d).png',frame);% image filename
 imref = imread(fileNameDataSet);% reference image
@@ -22,7 +23,7 @@ disp(['mse bw ref image and degraded image is:    ',num2str(mse)]);
 %%%%%%%%%%% 
 im(:,:,1)=im2double(imref(:,:,1));
 tic
-myevaluations(im,imref,9.00,frame,inpath,outpath);
+myevaluations(im,imref,12.01,frame,inpath,outpath);
 % mse = immse (im2(:,:,1) , imref (:,:,1) );
 % disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 % figure('name','restored vs original'),imshow(cat(2, im2, imref));
