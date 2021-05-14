@@ -1,7 +1,55 @@
 function  main(im,imref,method,prefixaddress)
-% im is normalized 0-1
-% imref is uint8
-% prefixaddress='I:\';
+% % % im is normalized 0-1
+% % % imref is uint8
+% % % prefixaddress='I:\';
+% % % •	Normalized UDCP Medium Transmission Matrix
+
+% % % •	Normalized Saliency Map for UDCP Matrix
+
+% % % •	4-Level Gaussian Pyramid for Normalized Saliency Map
+
+% % % •	4-Level Residual Pyramid for Normalized UDCP Matrix
+
+% % % •	Normalized IATP Medium Transmission Matrix
+
+% % % •	Normalized Saliency Map for IATP Matrix
+
+% % % •	4-Level Gaussian Pyramid for Normalized Saliency Map
+
+% % % •	4-Level Residual Pyramid for Normalized IATP Matrix
+
+% % % •	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid + Normalizing 
+
+% % % •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix
+
+% % % •	Scene Depth by Log (Refined UDCP Matrix)/Log (0.8) Eq.16 [1]
+
+% % % •	Final UDCP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+% % % •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
+
+% % % •	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid + Normalization
+
+% % % •	Reconstructing IATP Pyramid to Build Refined IATP Matrix 
+
+% % % •	Scene Depth by Log (Refined IATP Matrix)/Log (0.8) Eq.16 [1]
+
+% % % •	Final IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+% % % •	Get Restored Red Channel Intensities with Final IATP Matrix Eq.18 [1]
+
+% % % •	Joint UDCP + IATP Pyramids as Summation of Corresponding Pyramids + Normalization
+
+% % % •	Reconstructing Joint UDCP + IATP Pyramid to Build Joint UDCP + IATP Matrix
+
+% % % •	Scene Depth by Log (Joint UDCP + IATP Matrix)/Log (0.8) Eq.16 [1]
+
+% % % •	Final Joint UDCP + IATP Matrix by 0.85^ (Scene Depth) Eq.17 [1]
+
+% % % •	Get Restored Red Channel Intensities with Final Joint UDCP + IATP Matrix Eq.18 [1]
+
+
+
 %%%%%%%%%%%
   % Since residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
   printf('\nmethod %.2f\n',method);
