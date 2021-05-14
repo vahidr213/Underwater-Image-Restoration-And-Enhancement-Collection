@@ -12,6 +12,10 @@ elseif method == 1.02
 elseif method == 1.03
   cd('./01.03/');
   main(im,imref,method,outpath);
+elseif method == 1.04
+  cd('./01.04/');
+  main(im,imref,method,outpath);
+
 elseif method == 2.00
   if (exist ('OCTAVE_VERSION', 'builtin'))% for Octave
     disp('this method requires Matlab.')    
