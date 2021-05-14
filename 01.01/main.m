@@ -11,21 +11,21 @@ gs = 3;
 medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);% make a 3 channel
 saliencymap = saliency_detection(im2uint8(medtransMat3),1);
 
-%%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
+%%%%%%%% Gaussian and residual Pyramid of the saliencymap
 %%%%%%the below code supports both gray and 3D images
-num_levels = 4; % num of gauss and laplacian pyr levels
+num_levels = 4; % num of gauss and residual pyr levels
 pyr=cell(1,num_levels);
-lappyr=cell(1,num_levels);
+residualPyr=cell(1,num_levels);
 salGaussPyr = cell(1,num_levels);
 finalmedtransPyr = cell(1,num_levels);
 
 salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
-lappyr=buildpyramid(medtransMat,num_levels,2);%laplacian pyr of medium transmission
+residualPyr=buildpyramid(medtransMat,num_levels,2);%residual pyr of medium transmission
 
 %%%%% multiplying saliency map gaussian pyramid
-%%%%% with laplacian pyramid of medium transmission
+%%%%% with residual pyramid of medium transmission
 for i = 1 : (num_levels)
-  finalmedtransPyr{i} = salGaussPyr{i} .* lappyr{i};  
+  finalmedtransPyr{i} = salGaussPyr{i} .* residualPyr{i};  
   %%%%% normalizing to 0-1
   % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
   %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
@@ -39,13 +39,13 @@ medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);%%% make it 3 channel
 
 saliencymap = saliency_detection(im2uint8(medtransMat3), 1);%%%% 1 = method 1
 
-%%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
+%%%%%%%% Gaussian and residual Pyramid of the saliencymap
 %%%%%%the below code supports both gray and 3D images
 salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
-lappyr=buildpyramid(medtransMat,num_levels,2);%laplacian pyr of medium transmission
-%%%%% multiplying saliency map gaussian pyramid with laplacian pyramid of medium transmission
+residualPyr=buildpyramid(medtransMat,num_levels,2);%residual pyr of medium transmission
+%%%%% multiplying saliency map gaussian pyramid with residual pyramid of medium transmission
 for i = 1 : (num_levels)
-  finalmedtransPyr{i} = salGaussPyr{i} .* lappyr{i};
+  finalmedtransPyr{i} = salGaussPyr{i} .* residualPyr{i};
   %%%%% normalizing to 0-1
   % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
   %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );

@@ -21,7 +21,6 @@ elseif method == 2.00
     resfilename=sprintf('method %.2f restored vs original',method);
     resfilename=sprintf('%s%s.jpg',outpath,resfilename);
     imwrite(cat(2, imrestored, imref ) , resfilename);
-
   endif
 elseif method == 2.01
   cd('./02.01/');
