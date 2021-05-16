@@ -1,4 +1,4 @@
-function  main(im,imref,method,prefixaddress)
+function  main(method,prefixaddress)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % % prefixaddress='I:\';
@@ -53,6 +53,16 @@ function  main(im,imref,method,prefixaddress)
 %%%%%%%%%%%
   % Since residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
   printf('\nmethod %.2f\n',method);
+  pwd0=pwd;
+  imref = imread(inpath);
+  im = im2double(imref);
+  if doDegradation == 1
+    cd('./01.01/');
+    medtransMat  =  mediumtransmissionMat (im, gsdestruction, 1);% 1 = UDCP(more degradation), 2 = IATP(less degradation)
+    cd(pwd0);
+    im(:,:,1) = im(:,:,1) .* medtransMat;
+  end%if
+
   gs = 3;
   %%% % % calculate medium transmission for degraded picture
   [medtransMat, globalBackgLight] =  mediumtransmissionMat (im, gs, 1);% 1=UDCP
@@ -112,10 +122,11 @@ function  main(im,imref,method,prefixaddress)
   imrestored=im;% restored image 3 channel
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - UDCP',method);
+if doDegradation == 1
   disp('');
   disp('using UDCP medium transmission:');
   disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
+endif  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
   resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
   
@@ -130,9 +141,11 @@ function  main(im,imref,method,prefixaddress)
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - IATP',method);
   mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
-  disp('');
-  disp('using IATP medium transmission:');
-  disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+    if doDegradation == 1
+      disp('');
+      disp('using IATP medium transmission:');
+      disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+    end
   figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
   resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
@@ -155,9 +168,11 @@ function  main(im,imref,method,prefixaddress)
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - UDCP+IATP',method);
   mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
-  disp('');
-  disp('using IATP + UDCP medium transmission:')
-  disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+  if doDegradation == 1
+    disp('');
+    disp('using IATP + UDCP medium transmission:')
+    disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+  end
   figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
   resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);

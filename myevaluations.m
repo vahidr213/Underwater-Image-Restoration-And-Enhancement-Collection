@@ -1,11 +1,37 @@
-function  myevaluations(im,imref,method,framenum,inpath,outpath)
+function  myevaluations(method,inpath,outpath,doDegradation)
 % im is normalized 0-1
 % imref is uint8
 % outpath='I:\';
 %%%%%%%%%%%
+pwd0=pwd;
+imref = imread(inpath);
+im = im2double(imref);
+if doDegradation == 1
+  cd('./01.01/');
+  im = im2double(imref);
+  medtransMat  =  mediumtransmissionMat (im, gsdestruction, 1);% 1 = UDCP(more degradation), 2 = IATP(less degradation)
+  cd(pwd0);
+  im(:,:,1) = im(:,:,1) .* medtransMat;
+end%if
+
+imref = imread(fileNameDataSet);% reference image
+im = imref;% im holds the degraded image
+im2 = im;
+im = im2double( im );% convert im to normalize 0-1 range
+%%%%%% destructing ref image
+%%square grid size or square patch size - e.g. 3x3
+gsdestruction = 3;
+
+im( : , : , 1) = im( : , : , 1)  .* medtransMat ;
+mse = immse ( im2uint8( im(:,:,1) ) , imref (:,:,1) );
+disp(['mse bw ref image and degraded image is:    ',num2str(mse)]);
+%%%%%%%%%%% 
+im(:,:,1)=im2double(imref(:,:,1));
+
+
 if method == 1.01
   cd('./01.01/');
-  main(im,imref,method,outpath);
+  main(im,imref,method,outpath,doDegradation);
 elseif method == 1.02
   cd('./01.02/');
   main(im,imref,method,outpath);
