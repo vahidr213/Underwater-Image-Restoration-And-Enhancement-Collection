@@ -1,4 +1,4 @@
-function  main(method,prefixaddress)
+function  main(method,prefixaddress,doDegradation)
 % % im is normalized 0-1
 % % imref is uint8
 % % prefixaddress='I:\';
