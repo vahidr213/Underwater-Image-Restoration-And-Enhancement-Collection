@@ -11,13 +11,13 @@ warning('off', 'all')% suppress all warnings
 num = 5;%suffix for reading frame
 inpath=sprintf('%swater (%d).png',inpath,num);% image filename
 % method = [1.01 1.02 1.03];
-method = 12.01;
+method = 1.04;
 pwd0=pwd;%current dir
 for i = 1:length(method)
     tic
-    evaluations(inpath,outpath,doDegradation,method(i));    
+    evaluations(inpath,outpath,doDegradation,method(i));
+    cd(pwd0);    
     toc
-    cd(pwd0);
     printf('\n\n');
     close all
 end
@@ -27,9 +27,9 @@ doDegradation = 1;
 cd(pwd0);
 for i = 1:length(method)
     tic
-    evaluations(inpath,outpath,doDegradation,method(i));        
+    evaluations(inpath,outpath,doDegradation,method(i));
+    cd(pwd0);    
     toc
-    cd(pwd0);
     printf('\n\n');
     close all
 end

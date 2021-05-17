@@ -1,15 +1,17 @@
 % =========================================================================
 %% Deep Lowlight image enhancement %%
 % =========================================================================
-function imrestored = demo(num,inpath)
+function imrestored = demo(doDegradation,inpath)
 
 addpath(genpath('.'));
 r=1.7;
 %% read image
 % [fn,pn,fi]=uigetfile('*.bmp;*.jpg;*.png;*.tif','select image');
 % im=imread([pn fn]);
-path=sprintf('%swater (%d).png',inpath,num);% image filename
-im=imread(path);
+pwd0=cd('..');
+im = load_image(doDegradation,inpath);     
+cd(pwd0);
+
 figure,imshow(im),title('input');
 IM=im2double(im);
 [height,width,channel]=size(IM);

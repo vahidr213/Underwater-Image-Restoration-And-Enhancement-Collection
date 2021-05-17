@@ -1,9 +1,11 @@
-function J = demo(num,inpath)
+function imrestored = demo(doDegradation,inpath)
 %load image
 % num = 57; % 57,51,50,47,36,37,38
 % img = double(load_image(num));
-path=sprintf('%swater (%d).png',inpath,num);% image filename
-img = imread(path);
+pwd0=cd('..');
+img = load_image(doDegradation,inpath);     
+cd(pwd0);
+
 img = double(img);
 [m, n, ~] = size(img);
 
@@ -38,6 +40,7 @@ J(:,:,2) = (J(:, :, 2) - min(min(J(:, :, 2)))) / ...
 J(:,:,3) = (J(:, :, 3) - min(min(J(:, :, 3)))) / ...
     (max(max(J(:, :, 3))) - min(min(J(:, :, 3)))) * 255;
 figure,imshow([img, uint8(J)])
+imrestored = uint8(J);
 %*********************gamma correction************************
 %J = (J / 255) .^ 0.8;
 %figure,imshow(uint8(J))

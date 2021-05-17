@@ -1,4 +1,4 @@
-function result = demo(num,inpath,outpath,method)
+function imrestored = demo(doDegradation,inpath,outpath,method)
 % Implementation of the work "L^2UWE: A Framework for the 
 % Efficient Enhancement of Low-Light Underwater Images Using
 % Local Contrast and Multi-Scale Fusion" by Tunai P. Marques and Alenxadra
@@ -20,8 +20,10 @@ addpath("./utils/")
 
 % choose the input image
 % img_original = imread('./data/181.jpg');
-path=sprintf('%swater (%d).png',inpath,num);% image filename
-img_original = imread(path);
+pwd0=cd('..');
+imgimg_original = load_image(doDegradation,inpath);     
+cd(pwd0);
+
 
 % to standardize calculations, the image has to be 3-channel and type uint8
 if ~(isa(img_original,'uint8'))
@@ -75,7 +77,8 @@ if(save_outputs == 1)
     imwrite(inverted,string(outPath)+'inverted.png');
     imwrite(img_original,string(outPath)+'original.png');
 end 
-
+result = im_unity(result);
+imrestored = im2uint8(result);
 license('inuse')
 
 

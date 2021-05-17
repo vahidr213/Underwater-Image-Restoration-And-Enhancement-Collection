@@ -1,4 +1,4 @@
-function Proposed_Retinex(num,inpath,outpath,method)
+function Proposed_Retinex(doDegradation,inpath,outpath,method)
 %clc,
 %clear,
 %****************************add the folder path***************************
@@ -20,8 +20,10 @@ addpath(('D:/A-Collection-Of-Underwater-Image-Restoration-And-Enhancement-With-M
 %I = image_load(vargin{2});
 %vargin = 'liahthouse.png';
 %I = image_load(vargin);
-path=sprintf('%swater (%d).png',inpath,num);% image filename
-I = imread(path);
+pwd0=cd('..');
+[I,imref] = load_image(doDegradation,inpath);     
+cd(pwd0);
+
 %I=image_load(vargin);
 %vargin='greenwich-reference.png';
 %ref=image_load(vargin);
@@ -88,6 +90,12 @@ imrestored = uint8(rgb*255);
 resfilename=sprintf('method %.2f Retinex restored vs original',method);
 resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, imrestored, I ) , resfilename);
+
+
+if doDegradation == 1
+    mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+end
 
 %PSNR = psnr(uint8(rgb*255), uint8(ref))
 %[SSIMVAL, ~] = ssim(uint8(rgb*255), uint8(ref))

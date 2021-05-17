@@ -81,7 +81,7 @@ elseif method == 2
     %---------------------------------------------------------
     %Saliency map computation
     %---------------------------------------------------------
-    saliencymap = zeros(height, width);
+    sm= zeros(height, width);
     off1 = int32(md/2); off2 = int32(md/4); off3 = int32(md/8);
     for j = 1:height
         y11 = max(1,j-off1); y12 = min(j+off1,height);
@@ -101,11 +101,11 @@ elseif method == 2
             cv1 = (l(j,k)-lm1).^2 + (a(j,k)-am1).^2 + (b(j,k)-bm1).^2;
             cv2 = (l(j,k)-lm2).^2 + (a(j,k)-am2).^2 + (b(j,k)-bm2).^2;
             cv3 = (l(j,k)-lm3).^2 + (a(j,k)-am3).^2 + (b(j,k)-bm3).^2;
-            saliencymap(j,k) = cv1 + cv2 + cv3;
+            sm(j,k) = cv1 + cv2 + cv3;
         end
     end
 
-    saliencymap = im_unity(saliencymap);% unity normalize 0-1
+    sm = im_unity(sm);% unity normalize 0-1
 
 endif %%% end of if method
 

@@ -1,9 +1,10 @@
-function J=ex_darkchannel_guildfilter(num,inpath)
+function J=ex_darkchannel_guildfilter(doDegradation,inpath)
 kenlRatio = 0.01;
 minAtomsLight = 240;
 %image_name =  'test1.jpg';
-image_name=sprintf('%swater (%d).png',inpath,num);% image filename
-img=imread(image_name);
+pwd0=cd('..');
+img = load_image(doDegradation,inpath);     
+cd(pwd0);
 figure,imshow(uint8(img)), title('src');
 sz=size(img);
 w=sz(2);

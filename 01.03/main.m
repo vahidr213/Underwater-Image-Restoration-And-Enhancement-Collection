@@ -1,7 +1,6 @@
-function  main(method,prefixaddress,doDegradation)
+function  main(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
-% % % prefixaddress='I:\';
 % % % •	Normalized UDCP Medium Transmission Matrix
 
 % % % •	Normalized Saliency Map for UDCP Matrix
@@ -53,15 +52,10 @@ function  main(method,prefixaddress,doDegradation)
 %%%%%%%%%%%
   % Since residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
   printf('\nmethod %.2f\n',method);
-  pwd0=pwd;
-  imref = imread(inpath);
-  im = im2double(imref);
-  if doDegradation == 1
-    cd('./01.01/');
-    medtransMat  =  mediumtransmissionMat (im, gsdestruction, 1);% 1 = UDCP(more degradation), 2 = IATP(less degradation)
-    cd(pwd0);
-    im(:,:,1) = im(:,:,1) .* medtransMat;
-  end%if
+  pwd0=cd('..');
+  [im,imref] = load_image(doDegradation,inpath);
+  im = im2double(im);
+  cd(pwd0);  
 
   gs = 3;
   %%% % % calculate medium transmission for degraded picture
@@ -122,12 +116,13 @@ function  main(method,prefixaddress,doDegradation)
   imrestored=im;% restored image 3 channel
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - UDCP',method);
-if doDegradation == 1
-  disp('');
-  disp('using UDCP medium transmission:');
-  disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-endif  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-  resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  if doDegradation == 1
+    disp('');
+    disp('using UDCP medium transmission:');
+    disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+  endif  
+  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
   
   
@@ -147,7 +142,7 @@ endif  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
       disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
     end
   figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-  resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
   
   % %%%%%% combining 2 final medium transmission pyramids into one
@@ -174,7 +169,7 @@ endif  figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
     disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
   end
   figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-  resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 end

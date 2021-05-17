@@ -1,7 +1,7 @@
-function  main(method,prefixaddress,doDegradation)
+function  main(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
-% % % prefixaddress='I:\';
+% % % outpath='I:\';
 % % %%%%%%%%%%%
 % % % This method is almost completely alike to method 1.01. the only difference is in saliency detection algorithm. This is another saliency detection algorithm which is highly slow.
 
@@ -54,15 +54,10 @@ function  main(method,prefixaddress,doDegradation)
 
 
 printf('\nmethod %.2f\n',method);
-pwd0=pwd;
-imref = imread(inpath);
-im = im2double(imref);
-if doDegradation == 1
-  cd('./01.01/');
-  medtransMat  =  mediumtransmissionMat (im, gsdestruction, 1);% 1 = UDCP(more degradation), 2 = IATP(less degradation)
-  cd(pwd0);
-  im(:,:,1) = im(:,:,1) .* medtransMat;
-end%if
+pwd0=cd('..');
+[im,imref] = load_image(doDegradation,inpath);
+im = im2double(im);
+cd(pwd0);
 
 gs = 3;
 %%% % % calculate medium transmission for degraded picture
@@ -129,7 +124,7 @@ if doDegradation == 1
   disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 endif
 figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 
@@ -149,7 +144,7 @@ if doDegradation == 1
   disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 end
 figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 % %%%%%% combining 2 final medium transmission pyramids into one
@@ -172,7 +167,7 @@ if doDegradation == 1
   disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 end
 figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
-resfilename=sprintf('%s%s.jpg',prefixaddress,resfilename);
+resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 

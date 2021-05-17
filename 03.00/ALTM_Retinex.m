@@ -1,4 +1,7 @@
-function outval = ALTM_Retinex(I)
+function outval = ALTM_Retinex(doDegradation,inpath)
+pwd0=cd('..');
+I = load_image(doDegradation,inpath);     
+cd(pwd0);
 II = im2double(I);
 Ir=double(II(:,:,1)); Ig=double(II(:,:,2)); Ib=double(II(:,:,3));
 % Global Adaptation
@@ -28,6 +31,7 @@ Lout = SimplestColorBalance(Lout, 0.005, 0.001, 1);
 gain = Lout ./ Lw;
 gain(find(Lw == 0)) = 0;
 outval = cat(3, gain .* Ir, gain .* Ig, gain .* Ib);
+outval = im_unity(outval);
 %outval(find(outval > 1)) = 1;
 %outval = SimplestColorBalance(outval, 0.001, 0.02, 1);
 %[H, S, V] = rgb2hsv(outval);

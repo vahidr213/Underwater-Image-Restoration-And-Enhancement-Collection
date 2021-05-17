@@ -1,11 +1,13 @@
-function imrestored=main(num,inpath)
+function imrestored=main(doDegradation,inpath)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%DIP-Assignment%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Image input
 % We take a RGB image as input and convert it to grayscale and store it in
 % another variable, so we can get the mean luminance.
-path=sprintf('%swater (%d).png',inpath,num);% image filename
-rgbImage=imread(path);
+pwd0=cd('..');
+rgbImage = load_image(doDegradation,inpath);     
+cd(pwd0);
+
 rgbImage=im2double(rgbImage);
 grayImage = rgb2gray(rgbImage); 
 %% White Balancing

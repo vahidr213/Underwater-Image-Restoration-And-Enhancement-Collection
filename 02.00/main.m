@@ -1,5 +1,8 @@
-function imrestored=main(num,inpath)
-img = load_image(num,inpath);
+function imrestored=main(doDegradation,inpath)
+pwd0=cd('..');
+img = load_image(doDegradation,inpath);     
+cd(pwd0);   
+     
 %[meanRG, deltaRG, meanYB, deltaYB, uicm] = UICM(img)
 % white balance
 %img1 = white_balance(img);
