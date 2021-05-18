@@ -103,11 +103,11 @@ opts.nSimFtrs = (nCells*nCells)*(nCells*nCells-1)/2*nChns;
 opts.nTotFtrs = opts.nChnFtrs + opts.nSimFtrs; disp(opts);
 
 % generate stream for reproducibility of model
-stream=RandStream('mrg32k3a','Seed',opts.seed);
+% stream=RandStream('mrg32k3a','Seed',opts.seed);
 
-% train nTrees random trees (can be trained with parfor if enough memory)
-if(opts.useParfor), parfor i=1:nTrees, trainTree(opts,stream,i); end
-else for i=1:nTrees, trainTree(opts,stream,i); end; end
+% % train nTrees random trees (can be trained with parfor if enough memory)
+% if(opts.useParfor), parfor i=1:nTrees, trainTree(opts,stream,i); end
+% else for i=1:nTrees, trainTree(opts,stream,i); end; end
 
 % merge trees and save model
 model = mergeTrees( opts );

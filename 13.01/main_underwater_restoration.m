@@ -20,7 +20,7 @@ edges_path = fullfile('utils', 'edges');
 addpath('utils')
 addpath(edges_path)
 addpath(genpath(toolbox_path))
-
+addpath(fullfile('utils','toolbox','matlab'))
 % % Suppress Warning regarding image size
 % warning('off', 'Images:initSize:adjustingMag');
 % feature('DefaultCharacterSet', 'UTF8');
