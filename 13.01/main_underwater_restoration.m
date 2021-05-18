@@ -1,4 +1,4 @@
-function imrestored=main_underwater_restoration(doDegradation,inpath,outpath)
+function imrestored = main_underwater_restoration(doDegradation,inpath,outpath)
 % A revised implementation of 
 % "Diving Into Haze-Lines: Color restoration of Underwater Images",
 % Dana Berman, Tali Treibitz, Shai Avidan, BMVC 2017.
@@ -28,10 +28,13 @@ addpath(genpath(toolbox_path))
 %% Folders etc.
 % A few example input images are saves in this sub-directory. 
 % The code can run on either sRGB or raw images
-images_dir = 'images';
-listing = cat(1, dir(fullfile(images_dir, '*_input.jpg')), ...
-    dir(fullfile(images_dir, '*.CR2')));
-
+% images_dir = 'images';
+% listing = cat(1, dir(fullfile(images_dir, '*_input.jpg')), ...
+%     dir(fullfile(images_dir, '*.CR2')));
+images_dir = inpath;
+pwd0 = cd(inpath);
+listing = dir('*.png');
+cd(pwd0);
 % The final output will be saved in this directory:
 % result_dir = fullfile(images_dir, 'results');
 result_dir = outpath;

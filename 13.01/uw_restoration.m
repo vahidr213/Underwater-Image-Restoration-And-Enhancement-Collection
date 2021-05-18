@@ -77,7 +77,8 @@ if is_raw,
     
 else
     % sRGB images do not require special conversion.
-    img_in = im2double(imread(fullfile(img_dir, img_name)));
+    % img_in = im2double(imread(fullfile(img_dir, img_name)));
+    img_in = imread(img_dir);
     % Contrast stretch, to obtain a better dynamic range.
     img_in = adjust_contrast(img_in, 1, 3);
 end
