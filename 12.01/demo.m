@@ -76,12 +76,14 @@ if(save_outputs == 1)
     imwrite(result,string(outPath)+'result.png');
     imwrite(inverted,string(outPath)+'inverted.png');
     imwrite(img_original,string(outPath)+'original.png');
-end 
+end
+dispcheck(result(:),'result range')
 result = im_unity(result);
-imrestored = im2uint8(result);
-disp('max:')
-max(imrestored(:))
-class(imrestored)
+result = result * 255.0;
+imrestored = uint8(result);
+% disp('max:')
+% max(imrestored(:))
+% class(imrestored)
 % license('inuse')
 
 

@@ -19,7 +19,7 @@ for i = 1:length(method)
     toc
     cd(pwd0);
     printf('\n\n');
-    close all
+    % close all
 end
 %%%return
 
@@ -31,5 +31,5 @@ for i = 1:length(method)
     toc
     cd(pwd0);
     printf('\n\n');
-    close all
+    % close all
 end

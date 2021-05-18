@@ -1,4 +1,4 @@
-function imrestored=main_underwater_restoration(num,inpath,outpath)
+function imrestored=main_underwater_restoration(doDegradation,inpath,outpath)
 % A revised implementation of 
 % "Diving Into Haze-Lines: Color restoration of Underwater Images",
 % Dana Berman, Tali Treibitz, Shai Avidan, BMVC 2017.

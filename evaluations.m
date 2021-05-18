@@ -216,9 +216,9 @@ elseif method ==12.01
   cd('./12.01/');  
   imrestored=demo(doDegradation,inpath,outpath,method);
   imrestored = uint8(imrestored);
-  class(imrestored)
-  class(imref)
-  max(imrestored(:))
+  % class(imrestored)
+  % class(imref)
+  % max(imrestored(:))
   resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
