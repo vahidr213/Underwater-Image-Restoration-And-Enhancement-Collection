@@ -237,9 +237,6 @@ elseif method == 13.01
     printf('mse bw ref image and restored image is:    %.3f\n',mse);
   end
 
-
-
-
   if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
     disp('this method requires Matlab.')
   else
@@ -252,5 +249,16 @@ elseif method == 13.01
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
   endif
+elseif method == 13.02
+  printf('\nmethod %.2f\n',method);
+  cd('./13.02/')
+  imrestored = main_underwater_restoration(doDegradation,'D:\RefPic\',outpath);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
+  if doDegradation == 1
+    mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    printf('mse bw ref image and restored image is:    %.3f\n',mse);
+  end
+
 endif % if method
 end
