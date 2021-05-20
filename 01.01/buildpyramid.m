@@ -25,6 +25,22 @@ elseif option == 2
     endfor
     residualPyr{end} = pyr{end};
     varargout{1}=residualPyr;
+elseif option == 3 % laplacian pyramid
+    %%%%%% Laplacian of Gaussian pyr
+    pyr = cell(1,num_levels);
+    laplacianPyr=cell(1,num_levels);
+    pyr{1}=im;
+    for i=2:num_levels
+        pyr{i}=pyr{i-1}(1:2:end,1:2:end);        
+    endfor
+    
+    for i = 1 : num_levels
+        laplacianPyr{i} = imfilter(pyr{i},fspecial('log',3),'replicate','conv');        
+    endfor
+    
+    varargout{1}=laplacianPyr;
+
+
 endif
 
 

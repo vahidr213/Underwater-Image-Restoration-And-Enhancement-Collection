@@ -34,6 +34,15 @@ elseif method == 1.05
 elseif method == 1.06
   cd('./01.01/');
   main6(inpath,outpath,doDegradation,method);
+elseif method == 1.07
+  cd('./01.01/');
+  main7(inpath,outpath,doDegradation,method);
+elseif method == 1.08
+  cd('./01.01/');
+  main8(inpath,outpath,doDegradation,method);
+elseif method == 1.09
+  cd('./01.01/');
+  main9(inpath,outpath,doDegradation,method);
 
 elseif method == 2.00
   printf('\nmethod %.2f\n',method);
