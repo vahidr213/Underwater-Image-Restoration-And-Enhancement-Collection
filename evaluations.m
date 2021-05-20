@@ -18,22 +18,22 @@ end%if
 
 if method == 1.01
   cd('./01.01/');
-  main(inpath,outpath,doDegradation,method);
+  main1(inpath,outpath,doDegradation,method);
 elseif method == 1.02
-  cd('./01.02/');
-  main(inpath,outpath,doDegradation,method);
+  cd('./01.01/');
+  main2(inpath,outpath,doDegradation,method);
 elseif method == 1.03
-  cd('./01.03/');
-  main(inpath,outpath,doDegradation,method);
+  cd('./01.01/');
+  main3(inpath,outpath,doDegradation,method);
 elseif method == 1.04
-  cd('./01.04/');
-  main(inpath,outpath,doDegradation,method);
+  cd('./01.01/');
+  main4(inpath,outpath,doDegradation,method);
 elseif method == 1.05
-  cd('./01.05/');
-  main(inpath,outpath,doDegradation,method);
+  cd('./01.01/');
+  main5(inpath,outpath,doDegradation,method);
 elseif method == 1.06
-  cd('./01.06/');
-  main(inpath,outpath,doDegradation,method);
+  cd('./01.01/');
+  main6(inpath,outpath,doDegradation,method);
 
 elseif method == 2.00
   printf('\nmethod %.2f\n',method);
