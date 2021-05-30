@@ -11,7 +11,7 @@ warning('off', 'all')% suppress all warnings
 num = 5;%suffix for reading frame
 inpath=sprintf('%swater (%d).png',inpath,num);% image filename
 % method = [1.01 1.02 1.03];
-method = 1.09;
+method = 13.01;
 pwd0=pwd;%current dir
 
 cd(pwd0);

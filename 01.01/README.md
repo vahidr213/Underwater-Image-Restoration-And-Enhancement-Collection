@@ -2,7 +2,9 @@
 
 **Method 1.01:**
 
-The work that is done in this Method 1.01 and its variants is described in [1]. This variant computations process can be charted as below: 
+The overall structure of this method is to some degree similar to the structure of proposed method in [1]. In this case, we have used Difference of Gaussian (DoG) instead of Laplacian pyramid proposed in [1] and no guided filter is used as well.
+
+This variant computations process can be charted as below: 
 
 •	Normalized UDCP Medium Transmission Matrix
 
@@ -10,7 +12,7 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized UDCP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized UDCP Matrix
 
 •	Normalized IATP Medium Transmission Matrix
 
@@ -18,9 +20,9 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized IATP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized IATP Matrix
 
-•	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid
+•	Multiplying UDCP Saliency Pyramid by UDCP Laplacian of Gaussian Pyramid to Build UDCP Pyramid
 
 •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix + Normalization
 
@@ -30,7 +32,7 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
 
-•	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid
+•	Multiplying IATP Saliency Pyramid by IATP Laplacian of Gaussian Pyramid to Build IATP Pyramid
 
 •	Reconstructing IATP Pyramid to Build Refined IATP Matrix + Normalization
 
@@ -315,7 +317,9 @@ This method normalizes the pyramids before reconstruction. It also doesn't norma
 
 **Method 1.07:**
 
-The work that is done in this Method 1.01 and its variants is described in [1]. This variant computations process can be charted as below: 
+The overall structure of this method is to some degree similar to the structure of proposed method in [1]. In this case, we have used Laplacian pyramid as proposed in [1] and no guided filter is used as well.
+
+This variant computations process can be charted as below: 
 
 •	Normalized UDCP Medium Transmission Matrix
 
@@ -323,7 +327,7 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized UDCP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized UDCP Matrix
 
 •	Normalized IATP Medium Transmission Matrix
 
@@ -331,9 +335,9 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized IATP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized IATP Matrix
 
-•	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid
+•	Multiplying UDCP Saliency Pyramid by UDCP Laplacian of Gaussian Pyramid to Build UDCP Pyramid
 
 •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix + Normalization
 
@@ -343,7 +347,7 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 
 •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
 
-•	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid
+•	Multiplying IATP Saliency Pyramid by IATP Laplacian of Gaussian Pyramid to Build IATP Pyramid
 
 •	Reconstructing IATP Pyramid to Build Refined IATP Matrix + Normalization
 
@@ -364,9 +368,9 @@ The work that is done in this Method 1.01 and its variants is described in [1]. 
 •	Get Restored Red Channel Intensities with Final Joint UDCP + IATP Matrix Eq.18 [1]
 
 
-**Method 1.02:**
+**Method 1.08:**
 
-Since Residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
+Since Laplacian of Gaussian pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
 
 •	Normalized UDCP Medium Transmission Matrix
 
@@ -374,7 +378,7 @@ Since Residual pyramid contains negative values, each pyramid will have negative
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized UDCP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized UDCP Matrix
 
 •	Normalized IATP Medium Transmission Matrix
 
@@ -382,9 +386,9 @@ Since Residual pyramid contains negative values, each pyramid will have negative
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized IATP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized IATP Matrix
 
-•	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid + Normalizing 
+•	Multiplying UDCP Saliency Pyramid by UDCP Laplacian of Gaussian Pyramid to Build UDCP Pyramid + Normalizing 
 
 •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix + Normalization
 
@@ -394,7 +398,7 @@ Since Residual pyramid contains negative values, each pyramid will have negative
 
 •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
 
-•	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid + Normalization
+•	Multiplying IATP Saliency Pyramid by IATP Laplacian of Gaussian Pyramid to Build IATP Pyramid + Normalization
 
 •	Reconstructing IATP Pyramid to Build Refined IATP Matrix + Normalization
 
@@ -416,7 +420,7 @@ Since Residual pyramid contains negative values, each pyramid will have negative
 
 
 
-**Method 1.03:**
+**Method 1.09:**
 
 This method normalizes the pyramids before reconstruction. It also doesn't normalize the medium transmission matrix after it is generated by pyramid reconstruction step.
 
@@ -427,7 +431,7 @@ This method normalizes the pyramids before reconstruction. It also doesn't norma
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized UDCP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized UDCP Matrix
 
 •	Normalized IATP Medium Transmission Matrix
 
@@ -435,9 +439,9 @@ This method normalizes the pyramids before reconstruction. It also doesn't norma
 
 •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-•	4-Level Residual Pyramid for Normalized IATP Matrix
+•	4-Level Laplacian of Gaussian Pyramid for Normalized IATP Matrix
 
-•	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid + Normalizing 
+•	Multiplying UDCP Saliency Pyramid by UDCP Laplacian of Gaussian Pyramid to Build UDCP Pyramid + Normalizing 
 
 •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix
 
@@ -447,7 +451,7 @@ This method normalizes the pyramids before reconstruction. It also doesn't norma
 
 •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
 
-•	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid + Normalization
+•	Multiplying IATP Saliency Pyramid by IATP Laplacian of Gaussian Pyramid to Build IATP Pyramid + Normalization
 
 •	Reconstructing IATP Pyramid to Build Refined IATP Matrix 
 
