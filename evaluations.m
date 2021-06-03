@@ -58,7 +58,7 @@ elseif method == 2.00
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
-  endif
+  end
 elseif method == 2.01
   printf('\nmethod %.2f\n',method);
   cd('./02.01/');
@@ -114,7 +114,7 @@ elseif method == 6.00
   else
     cd('./06.00/');
     Proposed_Retinex(doDegradation,inpath,outpath,method);
-  endif
+  end
 
 elseif method == 6.01
   printf('\nmethod %.2f\n',method);
@@ -147,7 +147,7 @@ elseif method == 8.00
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
-  endif
+  end
   
 elseif method == 8.01
   printf('\nmethod %.2f\n',method);
@@ -187,7 +187,7 @@ elseif method == 10.00
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
-  endif
+  end
   
 elseif method == 11.00
   printf('\nmethod %.2f\n',method);
@@ -202,7 +202,7 @@ elseif method == 11.00
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
-  endif
+  end
   
 elseif method ==12.00
   printf('\nmethod %.2f\n',method);
@@ -219,7 +219,7 @@ elseif method ==12.00
       printf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
 
-  endif
+  end
 elseif method ==12.01
   printf('\nmethod %.2f\n',method);
   cd('./12.01/');  
@@ -257,7 +257,7 @@ elseif method == 13.01
   %     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
   %     printf('mse bw ref image and restored image is:    %.3f\n',mse);
   %   end
-  % endif
+  % end
 
-endif % if method
+end % if method
 end

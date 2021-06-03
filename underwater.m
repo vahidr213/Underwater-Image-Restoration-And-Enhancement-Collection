@@ -1,6 +1,8 @@
 clc;clear all;close all
-pkg load image % comment this line if using Matlab
-pkg load signal
+if (exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    pkg load image
+    pkg load signal
+end
 inpath = 'D:\RefPic\';%path for reading image
 outpath = 'I:\';% path for saving results
 doDegradation = 1; % 0/1  - if 0, the image itself is restored.
