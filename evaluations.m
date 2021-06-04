@@ -51,8 +51,8 @@ elseif method == 2.00
   else% for matlab
     cd('./02.00/');
     imrestored=main(doDegradation,inpath);
-    resfilename=sfprintf('method %.2f restored vs original',method);
-    resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+    resfilename=sprintf('method %.2f restored vs original',method);
+    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -63,8 +63,8 @@ elseif method == 2.01
   fprintf('\nmethod %.2f\n',method);
   cd('./02.01/');
   imrestored = main(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -75,8 +75,8 @@ elseif method == 3.00
   % Adaptive Local Tone Mapping Based on Retinex for HDR Image
   cd('./03.00/');
   imrestored = im2uint8( ALTM_Retinex(doDegradation,inpath) );
-  resfilename=sfprintf('method %.2f ALTM Retinex restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f ALTM Retinex restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -87,8 +87,8 @@ elseif method == 4.00
   fprintf('\nmethod %.2f\n',method);
   cd('./04.00/');  
   imrestored = AtmLight(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f Atmosphere Light restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f Atmosphere Light restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -99,8 +99,8 @@ elseif method == 5.0
   fprintf('\nmethod %.2f\n',method);
   cd('./05.00/');
   imrestored = ex_darkchannel_guildfilter(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f Dark Channel restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f Dark Channel restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -125,8 +125,8 @@ elseif method == 7.00
   fprintf('\nmethod %.2f\n',method);
   cd('./07.00/');  
   imrestored=demo(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f all channels restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f all channels restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -140,8 +140,8 @@ elseif method == 8.00
   else
     cd('./08.00/');
     imrestored=main(doDegradation,inpath);
-    resfilename=sfprintf('method %.2f restored vs original',method);
-    resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+    resfilename=sprintf('method %.2f restored vs original',method);
+    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -153,8 +153,8 @@ elseif method == 8.01
   fprintf('\nmethod %.2f\n',method);
   cd('./08.01/');
   imrestored=main(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -165,8 +165,8 @@ elseif method == 9.00
   fprintf('\nmethod %.2f\n',method);
   cd('./09.00/');
   imrestored = demo(doDegradation,inpath);
-  resfilename=sfprintf('method %.2f restored vs original',method);
-  resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+  resfilename=sprintf('method %.2f restored vs original',method);
+  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -181,7 +181,7 @@ elseif method == 10.00
     % this method requires reference images
     cd('./10.00/');
     imrestored=correction_gui();
-    resfilename=sfprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -196,7 +196,7 @@ elseif method == 11.00
   else
     cd('./11.00/');
     imrestored=main(doDegradation,inpath);
-    resfilename=sfprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -211,8 +211,8 @@ elseif method ==12.00
   else
     cd('./12.00/');
     imrestored=demo(doDegradation,inpath,outpath,method);
-    resfilename=sfprintf('method %.2f restored vs original',method);
-    resfilename=sfprintf('%s%s.jpg',outpath,resfilename);
+    resfilename=sprintf('method %.2f restored vs original',method);
+    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -228,7 +228,7 @@ elseif method ==12.01
   % class(imrestored)
   % class(imref)
   % max(imrestored(:))
-  resfilename=sfprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -239,7 +239,7 @@ elseif method == 13.01
   fprintf('\nmethod %.2f\n',method);
   cd('./13.01/')
   imrestored = main_underwater_restoration(doDegradation,'D:\RefPic\',outpath);
-  resfilename=sfprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -251,7 +251,7 @@ elseif method == 13.01
   % else
   %   cd('./13.01/')
   %   imrestored=main_underwater_restoration(doDegradation,inpath,outpath);
-  %   resfilename=sfprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  %   resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   %   imwrite(cat(2, imrestored, imref ) , resfilename);
   %   if doDegradation == 1
   %     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
