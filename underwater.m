@@ -1,4 +1,6 @@
-clc;clear all;close all
+clc
+clear all
+close all
 if (exist ('OCTAVE_VERSION', 'builtin'))% for Octave
     pkg load image
     pkg load signal
@@ -12,27 +14,28 @@ doDegradation = 1; % 0/1  - if 0, the image itself is restored.
 warning('off', 'all')% suppress all warnings
 num = 5;%suffix for reading frame
 inpath=sprintf('%swater (%d).png',inpath,num);% image filename
-% method = [1.01 1.02 1.03];
-method = 13.01;
+% % % fast methods
+method = [2.00 1.01 1.02 1.03 1.07 1.08 1.09];
+% method = 1.09;
 pwd0=pwd;%current dir
 
 cd(pwd0);
-for i = 1:length(method)
+for i = 1:1%length(method)
     tic
-    evaluations(inpath,outpath,doDegradation,method(i));        
+    evaluations(inpath,outpath,doDegradation,method(i));
     toc
     cd(pwd0);
-    printf('\n\n');
+    fprintf('\n\n');
     % close all
 end
 
 doDegradation = 0;
-for i = 1:length(method)
+for i = 1:1%length(method)
     tic
     evaluations(inpath,outpath,doDegradation,method(i));    
     toc
     cd(pwd0);
-    printf('\n\n');
+    fprintf('\n\n');
     % close all
 end
 %%%return

@@ -8,9 +8,9 @@ if method == 1 %%%% UDCP method
     for i=-half:half
       for j=-half:half
         immin(:,:,k)=min(immin(:,:,k) , circshift(im(:,:,k),[i,j]));
-      endfor
-    endfor
-  endfor
+      end
+    end
+  end
 
   medtransMat=1-min(immin,[],3);
 
@@ -28,7 +28,7 @@ if method == 1 %%%% UDCP method
     globalBackgLight = double ( [maxvalred, greenglobalBackLight, blueglobalBackLight] );
 
     varargout{1}=globalBackgLight;
-  endif
+  end
 
 elseif method == 2  %%% Carlevaris-Bianco et al  
   % % % N. Carlevaris-Bianco, A. Mohan, and R. M. Eustice, ‘‘Initial results
@@ -39,9 +39,9 @@ elseif method == 2  %%% Carlevaris-Bianco et al
     for i=-half:half
       for j=-half:half
         immax(:,:,k)=max(immax(:,:,k) , circshift(im(:,:,k),[i,j]));
-      endfor
-    endfor
-  endfor
+      end
+    end
+  end
   immax(:,:,2)=max(immax(:,:,2), immax(:,:,3));%%% max bw green and ble channels
   immax(:,:,1)=immax(:,:,1)-immax(:,:,2);%%% eq.8 paper(underwater image restoration based on a new underwater image formation)
   %%%% save a copy of immax(:,:,1) in immax(:,:,3) for eq.9 computation
@@ -50,11 +50,11 @@ elseif method == 2  %%% Carlevaris-Bianco et al
   for i=-half:half
     for j=-half:half
       immax(:,:,3)=max(immax(:,:,3) , circshift(immax(:,:,1),[i,j]));
-    endfor
-  endfor
+    end
+  end
   medtransMat=1+immax(:,:,1)-immax(:,:,3);
 
 
-endif
+end
 
 end  % end of function

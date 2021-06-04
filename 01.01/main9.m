@@ -51,7 +51,7 @@ function  main(inpath,outpath,doDegradation,method)
 
 %%%%%%%%%%%
   % Since residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
-  printf('\nmethod %.2f\n',method);
+  fprintf('\nmethod %.2f\n',method);
   pwd0=cd('..');
   [im,imref] = load_image(doDegradation,inpath);
   im = im2double(im);
@@ -81,7 +81,7 @@ function  main(inpath,outpath,doDegradation,method)
     %%%%% normalizing pyramid to 0-1
     if size(finalmedtransPyr{i},3)==1 %%% for 2D image
       finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
-    endif
+    end
   end
   finalmedtransPyr1=finalmedtransPyr;
   
@@ -101,7 +101,7 @@ function  main(inpath,outpath,doDegradation,method)
     %%%%% normalizing pyramid to 0-1
     if size(finalmedtransPyr{i},3)==1 %%% for 2D image
       finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
-    endif
+    end
     % finalmedtransPyr{i}=guided_filter(finalmedtransPyr{i}, pyr{i}, 0.01, 5);
   end
   finalmedtransPyr2 = finalmedtransPyr;
@@ -120,7 +120,7 @@ function  main(inpath,outpath,doDegradation,method)
     disp('');
     disp('using UDCP medium transmission:');
     disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-  endif  
+  end  
   figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
   resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
@@ -151,8 +151,8 @@ function  main(inpath,outpath,doDegradation,method)
     %%%%% normalizing pyramid to 0-1
     if size(finalmedtransPyr{i},3)==1 %%% for 2D image
       finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
-    endif
-  endfor
+    end
+  end
   finalmedtransMat=pyramid_reconstruct(finalmedtransPyr);
   % finalmedtransMat=im_unity(finalmedtransMat);
   finalmedtransMat=log(max(finalmedtransMat,0.01*ones(size(finalmedtransMat))))/log(0.8);

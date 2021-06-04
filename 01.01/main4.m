@@ -53,7 +53,7 @@ function  main(inpath,outpath,doDegradation,method)
 
 
 
-printf('\nmethod %.2f\n',method);
+fprintf('\nmethod %.2f\n',method);
 pwd0=cd('..');
 [im,imref] = load_image(doDegradation,inpath);
 im = im2double(im);
@@ -83,7 +83,7 @@ for i = 1 : (num_levels)
   %%%%% normalizing to 0-1
   % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
   %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
-  % endif
+  % end
 end
 finalmedtransPyr1=finalmedtransPyr;
 
@@ -103,7 +103,7 @@ for i = 1 : (num_levels)
   %%%%% normalizing to 0-1
   % if size(finalmedtransPyr{i},3)==1 %%% for 2D image
   %   finalmedtransPyr{i}=(finalmedtransPyr{i}-min(finalmedtransPyr{i}(:)))/(max(finalmedtransPyr{i}(:)) - min(finalmedtransPyr{i}(:)) );
-  % endif
+  % end
   % finalmedtransPyr{i}=guided_filter(finalmedtransPyr{i}, pyr{i}, 0.01, 5);
 end
 finalmedtransPyr2 = finalmedtransPyr;
@@ -122,7 +122,7 @@ if doDegradation == 1
   disp('');
   disp('using UDCP medium transmission:');
   disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-endif
+end
 figure('name',resfilename),imshow(cat(2, im2uint8(imrestored), imref ));
 resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
@@ -150,7 +150,7 @@ imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 % %%%%%% combining 2 final medium transmission pyramids into one
 for i=1:num_levels
   finalmedtransPyr{i}=finalmedtransPyr{i}+finalmedtransPyr1{i};
-endfor
+end
 finalmedtransMat=pyramid_reconstruct(finalmedtransPyr);
 finalmedtransMat=im_unity(finalmedtransMat);
 finalmedtransMat=log(max(finalmedtransMat,0.01*ones(size(finalmedtransMat))))/log(0.8);
