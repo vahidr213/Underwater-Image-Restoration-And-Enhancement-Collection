@@ -29,13 +29,13 @@ for i = 1:1%length(method)
     % close all
 end
 
-doDegradation = 0;
-for i = 1:1%length(method)
-    tic
-    evaluations(inpath,outpath,doDegradation,method(i));    
-    toc
-    cd(pwd0);
-    fprintf('\n\n');
-    % close all
-end
-%%%return
+% doDegradation = 0;
+% for i = 1:1%length(method)
+%     tic
+%     evaluations(inpath,outpath,doDegradation,method(i));    
+%     toc
+%     cd(pwd0);
+%     fprintf('\n\n');
+%     % close all
+% end
+% %%%return

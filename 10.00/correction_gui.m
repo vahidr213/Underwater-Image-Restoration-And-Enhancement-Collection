@@ -20,9 +20,10 @@ function varargout = correction_gui(varargin)
 
 % --- Executes just before correction_gui is made visible.
 function correction_gui_OpeningFcn(hObject, eventdata, handles, varargin)
+
     % Choose default command line output for correction_gui
     handles.output = hObject;
-    clc;
+%     clc;
     warning('off','all');
     handles.basedir = pwd;
     % Update handles structure
@@ -66,6 +67,7 @@ function load_input_im_Callback(hObject, eventdata, handles)
     full_im_path=fullfile(full_path,im_path);
     input_im_path = full_path;
     input_im=imread(full_im_path);
+    
     axes(handles.input);
     imshow(input_im);
     handles.input_im = input_im;
@@ -94,11 +96,53 @@ function enlarge_ref_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in start.
 function start_Callback(hObject, eventdata, handles)
+% % % degradation on input image
+    global LABcolorTransform;
+    ref_im = handles.ref_im;
+    input_im = handles.input_im;
+    
+%     degrade input image
+    imref = input_im; % save a copy of the input image for error measuring
+    im = im2double(input_im);
+    pwd0 = cd('..');
+    gsdestruction = 3; % size of the window or patch around each point    
+    medtransMat  =  mediumtransmissionMat(im, gsdestruction, 1);% 1 = UDCP(more degradation), 2 = IATP(less degradation)    
+    im(:,:,1) = im(:,:,1) .* medtransMat;
+    input_im = im2uint8(im);
+    cd(pwd0);
+    picked_rbg = handles.picked_colors.picked_rbg
+    output_rbg = handles.picked_colors.output_rbg;
+    global result_image;
+    global AB_Transformation
+    ref_im_lab = applycform(im2double(ref_im), LABcolorTransform);
+    input_im_lab = applycform(im2double(input_im), LABcolorTransform);
+    lambda1=get(handles.lambda1, 'string');
+    l1=str2double(lambda1);
+    if (l1==0)
+        msgbox(sprintf('Variable lambda_1 must be different than 0'),'Error','Error')
+        return
+    end
+    lambda2=get(handles.lambda2, 'string');
+    l2=str2double(lambda2);
+    lambda3=get(handles.lambda3, 'string');
+    l3=str2double(lambda3);
+    w2=[1 0 0;0 1 0;0 0 1];
+    [A,B]=estimate_Ab_matrix_trust_region_method(picked_rbg,output_rbg,input_im_lab,ref_im_lab,l1,l2,l3,w2);  
+    AB=[A B];
+    AB_Transformation = AB;
+    result_image=transform_by_color_matrix(AB,input_im);
+    figure;
+    imshow(result_image);
+    set(handles.save_result,'Enable','on');
+    set(handles.Apply_All,'Enable','on');
+
+
+% % %  no degradation of input image
     global LABcolorTransform;
     ref_im = handles.ref_im;
     input_im = handles.input_im;
     picked_rbg = handles.picked_colors.picked_rbg;
-    output_rbg = handles.picked_colors.output_rbg;
+    output_rbg = handles.picked_colors.output_rbg
     global result_image;
     global AB_Transformation
     ref_im_lab = applycform(im2double(ref_im), LABcolorTransform);
