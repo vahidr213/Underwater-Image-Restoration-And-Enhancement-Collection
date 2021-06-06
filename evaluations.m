@@ -51,8 +51,8 @@ elseif method == 2.00
   else% for matlab
     cd('./02.00/');
     imrestored=main(doDegradation,inpath);
-    resfilename=sprintf('method %.2f restored vs original',method);
-    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+    
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -63,8 +63,8 @@ elseif method == 2.01
   fprintf('\nmethod %.2f\n',method);
   cd('./02.01/');
   imrestored = main(doDegradation,inpath);
-  resfilename=sprintf('method %.2f restored vs original',method);
-  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+  
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -113,7 +113,11 @@ elseif method == 6.00
     disp('this method requires Matlab.')
   else
     cd('./06.00/');
-    Proposed_Retinex(doDegradation,inpath,outpath,method);
+    try
+      Proposed_Retinex(doDegradation,inpath,outpath,method);
+    catch
+      disp('this method requires function altm_method')
+    end    
   end
 
 elseif method == 6.01
@@ -140,8 +144,8 @@ elseif method == 8.00
   else
     cd('./08.00/');
     imrestored=main(doDegradation,inpath);
-    resfilename=sprintf('method %.2f restored vs original',method);
-    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+    
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -153,8 +157,8 @@ elseif method == 8.01
   fprintf('\nmethod %.2f\n',method);
   cd('./08.01/');
   imrestored=main(doDegradation,inpath);
-  resfilename=sprintf('method %.2f restored vs original',method);
-  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+  
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -165,8 +169,8 @@ elseif method == 9.00
   fprintf('\nmethod %.2f\n',method);
   cd('./09.00/');
   imrestored = demo(doDegradation,inpath);
-  resfilename=sprintf('method %.2f restored vs original',method);
-  resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+  
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
@@ -178,32 +182,16 @@ elseif method == 10.00
   if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
     disp('this method requires Matlab.')
   else
-    % this method requires reference images
+    % this method requires nice quality reference images
     cd('./10.00/');
     imrestored = main(doDegradation, inpath);
-    resfilename=sprintf('method %.2f restored vs original',method);
-    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+    
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
         mse = immse (imrestored(:,:,1) , imref (:,:,1) );
         fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
     end
-%     correction_gui();
-%     imrestored = correction_gui();
-%     resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
-%     imwrite(cat(2, imrestored, imref ) , resfilename);
-    
-    
-    
-%     
-%     if doDegradation == 0 % no degradation on input image
-%     imrestored = correction_gui();
-%     resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
-%     imwrite(cat(2, imrestored, imref ) , resfilename);
-%     elseif doDegradation == 1
-%       mse = immse (imrestored(:,:,1) , imref (:,:,1) );
-%       fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
-%     end
   end
   
 elseif method == 11.00
@@ -212,7 +200,7 @@ elseif method == 11.00
     disp('this method requires Matlab.')
   else
     cd('./11.00/');
-    imrestored=main(doDegradation,inpath);
+    imrestored=main(doDegradation,inpath);    
     resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
@@ -228,8 +216,9 @@ elseif method ==12.00
   else
     cd('./12.00/');
     imrestored=demo(doDegradation,inpath,outpath,method);
-    resfilename=sprintf('method %.2f restored vs original',method);
-    resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+    
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+    resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
     imwrite(cat(2, imrestored, imref ) , resfilename);
     if doDegradation == 1
       mse = immse (imrestored(:,:,1) , imref (:,:,1) );

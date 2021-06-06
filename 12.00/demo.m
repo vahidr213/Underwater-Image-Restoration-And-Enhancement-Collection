@@ -21,7 +21,7 @@ addpath("./utils/")
 % choose the input image
 % img_original = imread('./data/181.jpg');
 pwd0=cd('..');
-imgimg_original = load_image(doDegradation,inpath);     
+img_original = load_image(doDegradation,inpath);     
 cd(pwd0);
 
 

@@ -83,4 +83,5 @@ title('Original');
 subplot(122);
 imshow((histeq(XFUS)));
 title('IV. Wavelet fusion');
-imrestored = histeq(XFUS);
+imrestored = im2uint8(histeq(XFUS));
+
