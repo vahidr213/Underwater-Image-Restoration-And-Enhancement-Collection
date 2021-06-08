@@ -77,7 +77,7 @@ if(save_outputs == 1)
     imwrite(inverted,string(outPath)+'inverted.png');
     imwrite(img_original,string(outPath)+'original.png');
 end
-dispcheck(result(:),'result range')
+% dispcheck(result(:),'result range')
 result = im_unity(result);
 result = result * 255.0;
 imrestored = uint8(result);

@@ -231,9 +231,6 @@ elseif method ==12.01
   cd('./12.01/');  
   imrestored=demo(doDegradation,inpath,outpath,method);
   imrestored = uint8(imrestored);
-  % class(imrestored)
-  % class(imref)
-  % max(imrestored(:))
   resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
   if doDegradation == 1
@@ -241,9 +238,9 @@ elseif method ==12.01
     fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
   end
 
-elseif method == 13.01
+elseif method == 13.00
   fprintf('\nmethod %.2f\n',method);
-  cd('./13.01/')
+  cd('./13.00/')
   imrestored = main_underwater_restoration(doDegradation,'D:\RefPic\',outpath);
   resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
   imwrite(cat(2, imrestored, imref ) , resfilename);
