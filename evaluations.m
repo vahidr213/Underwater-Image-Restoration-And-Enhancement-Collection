@@ -260,5 +260,30 @@ elseif method == 14.00
     fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
   end
 
+elseif method == 15.00
+  fprintf('\nmethod %.2f\n',method);
+  cd('./15.00/');
+  % imrestored = main(doDegradation,inpath);
+  imrestored = main(doDegradation,inpath);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
+  if doDegradation == 1
+    mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
+  end
+
+elseif method == 16.00
+  fprintf('\nmethod %.2f\n',method);
+  cd('./16.00/');
+  % imrestored = main(doDegradation,inpath);
+  imrestored = main(doDegradation,inpath);
+  resfilename=sprintf('%smethod %.2f restored vs original.jpg',outpath,method);
+  imwrite(cat(2, imrestored, imref ) , resfilename);
+  if doDegradation == 1
+    mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    fprintf('mse bw ref image and restored image is:    %.3f\n',mse);
+  end
+
+
 end % if method
 end
