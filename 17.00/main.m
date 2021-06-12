@@ -26,3 +26,5 @@ Op=UWB_VCE(I,para);
 figure, imshow([I Op], 'Border','tight');
 
 imrestored = Op;
+imrestored = im_unity(imrestored);
+imrestored = im2uint8(imrestored);
