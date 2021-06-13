@@ -1,4 +1,4 @@
-function  main(inpath,outpath,doDegradation,method)
+function  main3(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % % •	Normalized UDCP Medium Transmission Matrix

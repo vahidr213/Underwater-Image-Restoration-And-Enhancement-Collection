@@ -1,4 +1,4 @@
-function  main(inpath,outpath,doDegradation,method)
+function  main6(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % % outpath='I:\';

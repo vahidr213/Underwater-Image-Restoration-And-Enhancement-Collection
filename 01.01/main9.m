@@ -1,4 +1,4 @@
-function  main(inpath,outpath,doDegradation,method)
+function  main9(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % % •	Normalized UDCP Medium Transmission Matrix
@@ -7,7 +7,7 @@ function  main(inpath,outpath,doDegradation,method)
 
 % % % •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-% % % •	4-Level Residual Pyramid for Normalized UDCP Matrix
+% % % •	4-Level Laplacian of Gaussian Pyramid for Normalized UDCP Matrix
 
 % % % •	Normalized IATP Medium Transmission Matrix
 
@@ -15,9 +15,9 @@ function  main(inpath,outpath,doDegradation,method)
 
 % % % •	4-Level Gaussian Pyramid for Normalized Saliency Map
 
-% % % •	4-Level Residual Pyramid for Normalized IATP Matrix
+% % % •	4-Level Laplacian of Gaussian Pyramid for Normalized IATP Matrix
 
-% % % •	Multiplying UDCP Saliency Pyramid by UDCP Residual Pyramid to Build UDCP Pyramid + Normalizing 
+% % % •	Multiplying UDCP Saliency Pyramid by UDCP Laplacian of Gaussian Pyramid to Build UDCP Pyramid + Normalizing 
 
 % % % •	Reconstructing UDCP Pyramid to Build Refined UDCP Matrix
 
@@ -27,7 +27,7 @@ function  main(inpath,outpath,doDegradation,method)
 
 % % % •	Get Restored Red Channel Intensities with Final UDCP Matrix Eq.18 [1]
 
-% % % •	Multiplying IATP Saliency Pyramid by IATP Residual Pyramid to Build IATP Pyramid + Normalization
+% % % •	Multiplying IATP Saliency Pyramid by IATP Laplacian of Gaussian Pyramid to Build IATP Pyramid + Normalization
 
 % % % •	Reconstructing IATP Pyramid to Build Refined IATP Matrix 
 
@@ -50,7 +50,7 @@ function  main(inpath,outpath,doDegradation,method)
 
 
 %%%%%%%%%%%
-  % Since residual pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
+  % Since Laplacian of Gaussian pyramid contains negative values, each pyramid will have negative values too. In this case, the pyramids are normalized to unity 0-1 before reconstructing medium transmission matrix from.
   fprintf('\nmethod %.2f\n',method);
   pwd0=cd('..');
   [im,imref] = load_image(doDegradation,inpath);
@@ -63,9 +63,9 @@ function  main(inpath,outpath,doDegradation,method)
   medtransMat3=cat(3,medtransMat,medtransMat,medtransMat);% make a 3 channel
   saliencymap = saliency_detection(im2uint8(medtransMat3),1);
   
-  %%%%%%%% Gaussian and residual Pyramid of the saliencymap
+  %%%%%%%% Gaussian and Laplacian of Gaussian Pyramid of the saliencymap
   %%%%%%the below code supports both gray and 3D images
-  num_levels = 4; % num of gauss and residual pyr levels
+  num_levels = 4; % num of gauss and Laplacian of Gaussian pyr levels
   pyr=cell(1,num_levels);
   laplacianPyr=cell(1,num_levels);
   salGaussPyr = cell(1,num_levels);
@@ -75,7 +75,7 @@ function  main(inpath,outpath,doDegradation,method)
   laplacianPyr=buildpyramid(medtransMat,num_levels,3);%laplacian of Gaussian pyr of medium transmission
   
   %%%%% multiplying saliency map gaussian pyramid
-  %%%%% with residual pyramid of medium transmission
+  %%%%% with Laplacian of Gaussian pyramid of medium transmission
   for i = 1 : (num_levels)
     finalmedtransPyr{i} = salGaussPyr{i} .* laplacianPyr{i};  
     %%%%% normalizing pyramid to 0-1
@@ -91,11 +91,11 @@ function  main(inpath,outpath,doDegradation,method)
   
   saliencymap = saliency_detection(im2uint8(medtransMat3), 1);%%%% 1 = method 1
   
-  %%%%%%%% Gaussian and residual Pyramid of the saliencymap
+  %%%%%%%% Gaussian and Laplacian of Gaussian Pyramid of the saliencymap
   %%%%%%the below code supports both gray and 3D images
   salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
   laplacianPyr=buildpyramid(medtransMat,num_levels,3);%laplacian of Gaussian pyr of medium transmission
-  %%%%% multiplying saliency map gaussian pyramid with residual pyramid of medium transmission
+  %%%%% multiplying saliency map gaussian pyramid with Laplacian of Gaussian pyramid of medium transmission
   for i = 1 : (num_levels)
     finalmedtransPyr{i} = salGaussPyr{i} .* laplacianPyr{i};
     %%%%% normalizing pyramid to 0-1

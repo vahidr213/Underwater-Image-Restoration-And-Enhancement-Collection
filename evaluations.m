@@ -43,6 +43,9 @@ elseif method == 1.08
 elseif method == 1.09
   cd('./01.01/');
   main9(inpath,outpath,doDegradation,method);
+elseif method == 1.10
+  cd('./01.01/');
+  main10(inpath,outpath,doDegradation,method);
 
 elseif method == 2.00
   fprintf('\nmethod %.2f\n',method);
