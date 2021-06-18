@@ -1,4 +1,4 @@
-function Proposed_Retinex(doDegradation,inpath,outpath,method)
+function varargout =Proposed_Retinex(doDegradation,inpath,outpath,method)
 %clc,
 %clear,
 %****************************add the folder path***************************
@@ -85,6 +85,7 @@ imwrite(cat(2, imrestored, I ) , resfilename);
 
 if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    varargout{1} = mse;
     disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 end
 

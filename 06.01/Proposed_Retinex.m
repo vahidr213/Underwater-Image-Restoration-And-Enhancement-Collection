@@ -1,4 +1,4 @@
-function Proposed_Retinex(doDegradation,inpath,outpath,method)
+function varargout = Proposed_Retinex(doDegradation,inpath,outpath,method)
 %clc,
 %clear,
 %****************************add the folder path***************************
@@ -62,6 +62,8 @@ for j = 1 : J
 end
 
 %*************************Processing the LF signal*************************
+% % % this part of code is commented since the original source code has no
+% % % definition for altm_method(C) function in the following code
 Imag = sqrt(-1);
 % for s = 1 : 2
 %     C = w{J + 1}{1}{s} + Imag * w{J + 1}{2}{s};
@@ -94,6 +96,7 @@ imwrite(cat(2, imrestored, I ) , resfilename);
 
 if doDegradation == 1
     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+    varargout{1} = mse;
     disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
 end
 

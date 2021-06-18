@@ -1,4 +1,4 @@
-function  main10(inpath,outpath,doDegradation,method)
+function  varargout = main10(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % %%%%%%%%%%%
@@ -56,6 +56,7 @@ pwd0=cd('..');
 im = im2double(im);
 cd(pwd0);
 
+minmse = 0; % to find the best mse out of three mse
 gs = 3;
 %%% % % calculate medium transmission for degraded picture
 [medtransMat, globalBackgLight] =  mediumtransmissionMat (im, gs, 1);% 1=UDCP
@@ -71,7 +72,7 @@ salGaussPyr = cell(1,num_levels);
 finalmedtransPyr = cell(1,num_levels);
 
 salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
-laplacianPyr=buildpyramid(medtransMat,num_levels,3);%Laplacian of Gaussian pyr of medium transmission
+laplacianPyr=buildpyramid(medtransMat,num_levels,4);%Laplacian pyr of medium transmission
 
 %%%%% multiplying saliency map gaussian pyramid
 %%%%% with Laplacian pyramid of medium transmission
@@ -93,7 +94,7 @@ saliencymap = saliency_detection(im2uint8(medtransMat3), 1);%%%% 1 = method 1
 %%%%%%%% Gaussian and Laplacian Pyramid of the saliencymap
 %%%%%%the below code supports both gray and 3D images
 salGaussPyr=buildpyramid(saliencymap,num_levels,1);%gauss pyr of saliency
-laplacianPyr=buildpyramid(medtransMat,num_levels,3);%laplacian of Gaussian pyr of medium transmission
+laplacianPyr=buildpyramid(medtransMat,num_levels,4);%laplacian pyr of medium transmission
 %%%%% multiplying saliency map gaussian pyramid with Laplacian pyramid of medium transmission
 for i = 1 : (num_levels)
   finalmedtransPyr{i} = salGaussPyr{i} .* laplacianPyr{i};
@@ -112,6 +113,7 @@ finalmedtransMat=0.85.^finalmedtransMat;
 im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(finalmedtransMat)) , globalBackgLight(1)*finalmedtransMat);
 im2=im_unity(im2);
 mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+minmse = mse;% save a copy for upcoming min finding
 imrestored=im;% restored image 3 channel
 imrestored(:,:,1)=im2;% assign new restored red channel
 resfilename=sprintf('method %.2f restored vs original - UDCP',method);
@@ -135,6 +137,7 @@ imrestored=im;% restored image 3 channel
 imrestored(:,:,1)=im2;% assign new restored red channel
 resfilename=sprintf('method %.2f restored vs original - IATP',method);
 mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+minmse = min(mse,minmse);% min mse between 2 min
 if doDegradation == 1
 disp('');
 disp('using IATP medium transmission:');
@@ -168,5 +171,9 @@ resfilename=sprintf('%s%s.jpg',outpath,resfilename);
 imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
 
+minmse = min(mse,minmse);% min mse between 2 min
+if nargout == 1
+  varargout{1} = minmse;
+end
 
 end

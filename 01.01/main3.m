@@ -1,4 +1,4 @@
-function  main3(inpath,outpath,doDegradation,method)
+function varargout = main3(inpath,outpath,doDegradation,method)
 % % % im is normalized 0-1
 % % % imref is uint8
 % % % •	Normalized UDCP Medium Transmission Matrix
@@ -56,7 +56,8 @@ function  main3(inpath,outpath,doDegradation,method)
   [im,imref] = load_image(doDegradation,inpath);
   im = im2double(im);
   cd(pwd0);  
-
+  
+  minmse = 0; % to find the best mse out of three mse
   gs = 3;
   %%% % % calculate medium transmission for degraded picture
   [medtransMat, globalBackgLight] =  mediumtransmissionMat (im, gs, 1);% 1=UDCP
@@ -113,6 +114,7 @@ function  main3(inpath,outpath,doDegradation,method)
   im2=( im(:,:,1)-globalBackgLight(1)*(1-finalmedtransMat) )./max(0.3*ones(size(finalmedtransMat)) , globalBackgLight(1)*finalmedtransMat);
   im2=im_unity(im2);
   mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+  minmse = mse;% save a copy for upcoming min finding
   imrestored=im;% restored image 3 channel
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - UDCP',method);
@@ -136,6 +138,7 @@ function  main3(inpath,outpath,doDegradation,method)
   imrestored(:,:,1)=im2;% assign new restored red channel
   resfilename=sprintf('method %.2f restored vs original - IATP',method);
   mse = immse (im2uint8(im2(:,:,1)) , imref (:,:,1) );
+  minmse = min(mse,minmse);% min mse between 2 min
     if doDegradation == 1
       disp('');
       disp('using IATP medium transmission:');
@@ -172,4 +175,8 @@ function  main3(inpath,outpath,doDegradation,method)
   resfilename=sprintf('%s%s.jpg',outpath,resfilename);
   imwrite(cat(2, im2uint8(imrestored), imref ) , resfilename);
 
+  minmse = min(mse,minmse);% min mse between 2 min
+  if nargout == 1
+    varargout{1} = minmse;
+  end
 end

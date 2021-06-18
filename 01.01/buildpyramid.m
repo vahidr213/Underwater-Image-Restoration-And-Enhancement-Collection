@@ -50,6 +50,7 @@ elseif option == 4
     for i = 1 : num_levels
         laplacianPyr{i} = imfilter(pyr{i},fspecial('laplacian',0.2),'replicate','conv');        
     end
+    varargout{1}=laplacianPyr;
 
 
 end % option
