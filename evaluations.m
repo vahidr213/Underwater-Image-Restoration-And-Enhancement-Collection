@@ -46,6 +46,12 @@ elseif method == 1.09
 elseif method == 1.10
   cd('./01.01/');
   varargout{1} = main10(inpath,outpath,doDegradation,method);
+elseif method == 1.11
+  cd('./01.01/');
+  varargout{1} = main11(inpath,outpath,doDegradation,method);
+elseif method == 1.12
+  cd('./01.01/');
+  varargout{1} = main12(inpath,outpath,doDegradation,method);
 
 elseif method == 2.00
   fprintf('\nmethod %.2f\n',method);
