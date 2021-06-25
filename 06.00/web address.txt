@@ -1,4 +1,0 @@
-https://github.com/IsaacChanghau/OptimizedImageEnhance/tree/master/matlab/ALTMRetinex
-
-
-Adaptive Local Tone Mapping Based on Retinex for HDR Image
