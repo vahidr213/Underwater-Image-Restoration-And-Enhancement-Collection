@@ -6,7 +6,7 @@ f_high = 2.5;
 f_low = 0.5;
 
 %gauss_low_filter = fspecial('gaussian', [7 7], 1.414);
-gauss_low_filter = fspecial('gaussian', [3 3], 0.5);
+gauss_low_filter = fspecial('gaussian', [3 3], 1);
 matsize = size(gauss_low_filter);
 
 gauss_high_filter = zeros(matsize);
