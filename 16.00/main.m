@@ -9,7 +9,6 @@ function imrestored = main(doDegradation,inpath)
 pwd0=cd('..');
 I_in = load_image(doDegradation,inpath);     
 cd(pwd0);
-
 I_out= wdf_chs(I_in);
 figure;imshow([I_in I_out],'Border','tight');
 

@@ -177,7 +177,7 @@ function  varargout =   main8(inpath,outpath,doDegradation,method)
 
   minmse = min(mse,minmse);% min mse between 2 min
   if nargout == 1
-    varargout{1} = minmse;
+    varargout{1} = uint8(255*imrestored);
   end
   
 end

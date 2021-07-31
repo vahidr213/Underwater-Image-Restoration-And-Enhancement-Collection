@@ -1,5 +1,5 @@
 function [img_out, trans_out, A, estimated_water_type] = uw_restoration(...
-    img_name, img_dir, edges_path, max_width, result_dir, verbose)
+    img_name, edges_path, max_width, result_dir, verbose)
 % A revised implementation of 
 % "Diving Into Haze-Lines: Color restoration of Underwater Images",
 % Dana Berman, Tali Treibitz, Shai Avidan, BMVC 2017.
@@ -77,7 +77,7 @@ if is_raw,
     
 else
     % sRGB images do not require special conversion.
-    img_in = im2double(imread(fullfile(img_dir, img_name)));
+    img_in = im2double(imread(img_name));
     % Contrast stretch, to obtain a better dynamic range.
     img_in = adjust_contrast(img_in, 1, 3);
 end
@@ -89,7 +89,7 @@ end
 % later set the chart's transmission based on transmission values at its bottom. 
 % Get binary mask of chart/ no-chart, in the correct scale.
 resolution_str = [num2str(h), '_', num2str(w)];
-mask_filenme = fullfile(img_dir, [image_name, '_mask_', resolution_str, '.mat']);
+mask_filenme = fullfile(img_name, ['_mask_', resolution_str, '.mat']);
 if exist(mask_filenme, 'file'), load(mask_filenme, 'mask');
 else, mask = true(h,w);
 end

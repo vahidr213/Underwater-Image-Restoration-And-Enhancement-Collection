@@ -32,9 +32,9 @@ feature('DefaultCharacterSet', 'UTF8');
 % listing = cat(1, dir(fullfile(images_dir, '*_input.jpg')), ...
 %     dir(fullfile(images_dir, '*.CR2')));
 images_dir = inpath;
-pwd0 = cd(inpath);
-listing = dir('*.png');
-cd(pwd0);
+% pwd0 = cd(inpath);
+% listing = dir('*.png');
+% cd(pwd0);
 
 % The final output will be saved in this directory:
 % result_dir = fullfile(images_dir, 'results');
@@ -46,19 +46,22 @@ verbose = false;    % Whether to print and save verbose details.
 max_width = 2010;   % Maximum image width - larger images will be resized.
 
 %% Actual running
-for i_img = 1:length(listing)
+for i_img = 1:1%length(listing)
     [img_out, trans_out, A, estimated_water_type] = uw_restoration(...
-        listing(i_img).name, listing(i_img).folder, edges_path, max_width, ...
+        inpath, edges_path, max_width, ...
         result_dir, verbose);
 
-    [~, img_name, ~] = fileparts(listing(i_img).name);
-    % Some images have '_input' suffix, which is confusing in output
-    % filename, and therefore removed.
-    img_name = strrep(img_name, '_input', '');
-    % Save the enhanced image and the transmission map.
-    % imwrite(im2uint8(img_out), fullfile(result_dir, [img_name, '_output_img.jpg']));
-    % imwrite(im2uint8(trans_out), jetmap, fullfile(result_dir, [img_name, '_output_trans.jpg']));
+    % [~, img_name, ~] = fileparts(listing(i_img).name);
+    % % Some images have '_input' suffix, which is confusing in output
+    % % filename, and therefore removed.
+    % img_name = strrep(img_name, '_input', '');
+    % % Save the enhanced image and the transmission map.
+    % % imwrite(im2uint8(img_out), fullfile(result_dir, [img_name, '_output_img.jpg']));
+    % % imwrite(im2uint8(trans_out), jetmap, fullfile(result_dir, [img_name, '_output_trans.jpg']));
     
 end  % loop on different images
-size(img_out)
-imrestored = im2uint8(imresize(img_out,1/2));
+
+% imrestored = im2uint8(imresize(img_out,1/2));
+imrestored = im2uint8(img_out);
+im = imread(inpath);
+imrestored = imresize(imrestored,[size(im,1),size(im,2)]);

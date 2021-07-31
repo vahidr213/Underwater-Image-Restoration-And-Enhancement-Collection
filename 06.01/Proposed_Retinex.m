@@ -89,16 +89,17 @@ rgb = adjustment(rgb,I);
 imshow([I,uint8(rgb*255)])
 % imwrite(uint8(rgb*255),'proposed.png');
 imrestored = uint8(rgb*255);
-resfilename=sprintf('method %.2f Retinex restored vs original',method);
-resfilename=sprintf('%s%s.jpg',outpath,resfilename);
-imwrite(cat(2, imrestored, I ) , resfilename);
+varargout{1} = imrestored;
+% resfilename=sprintf('method %.2f Retinex restored vs original',method);
+% resfilename=sprintf('%s%s.jpg',outpath,resfilename);
+% imwrite(cat(2, imrestored, I ) , resfilename);
 
 
-if doDegradation == 1
-    mse = immse (imrestored(:,:,1) , imref (:,:,1) );
-    varargout{1} = mse;
-    disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
-end
+% if doDegradation == 1
+%     mse = immse (imrestored(:,:,1) , imref (:,:,1) );
+%     varargout{1} = mse;
+%     disp(['mse bw ref image and restored image is:    ',num2str(mse)]);
+% end
 
 %PSNR = psnr(uint8(rgb*255), uint8(ref))
 %[SSIMVAL, ~] = ssim(uint8(rgb*255), uint8(ref))
