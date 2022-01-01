@@ -11,16 +11,17 @@ elseif doDegradation == 0
     img = imref;
 elseif doDegradation == 2.0
     img = imread(inpath);
-    imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_DeepBlue.jpg');
-elseif doDegradation == 2.1
-    img = imread(inpath);
-    imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_front.jpg');
-elseif doDegradation == 2.2
-    img = imread(inpath);
-    imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_side.jpg');
-elseif doDegradation == 2.3
-    img = imread(inpath);
-    imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_milk.jpg');
+    
+% elseif doDegradation == 2.1
+%     img = imread(inpath);
+%     imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_front.jpg');
+% elseif doDegradation == 2.2
+%     img = imread(inpath);
+%     imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_side.jpg');
+% elseif doDegradation == 2.3
+%     img = imread(inpath);
+%     imref = imread('E:\MS\VisualStudio\opencv4.2exampleproject\WaterDataSet\Turbid\TURBID 3D\ref_milk.jpg');
+
 end%if
 
 if nargout == 2

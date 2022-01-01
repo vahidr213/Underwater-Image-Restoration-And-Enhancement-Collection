@@ -192,7 +192,16 @@ elseif method == 17.00
     imrestored = main(doDegradation,inpath);
   end
   
-
+elseif method == 18.00
+  fprintf('\nmethod %.2f\n',method);
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./18.00/');
+    imrestored = main(doDegradation,inpath);
+  end
+  
+  
 end % if method
 
 varargout{1} = imrestored;

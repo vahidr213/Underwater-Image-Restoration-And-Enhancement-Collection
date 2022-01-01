@@ -1,1 +1,6 @@
 https://github.com/IsaacChanghau/OptimizedImageEnhance/tree/master/matlab/DarkChannelPriorDehaze
+
+
+Single image haze removal using dark channel prior
+K He, J Sun, X Tang - IEEE transactions on pattern analysis …, 2010 - ieeexplore.ieee.org
+

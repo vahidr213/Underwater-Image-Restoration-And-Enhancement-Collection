@@ -28,7 +28,7 @@ function Y = maxfilt2(X,varargin)
 % filtering
 Y = vanherk(X,S(1),'max',shape);
 Y = vanherk(Y,S(2),'max','col',shape);
-
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [S, shape] = parse_inputs(varargin)
 shape = 'same';
@@ -63,3 +63,4 @@ if length(S) ~= 2
    error('Wrong window size parameter.')
 end
 
+end
