@@ -1,4 +1,5 @@
 function outval = ALTM_Retinex(doDegradation,inpath)
+
 pwd0=cd('..');
 I = load_image(doDegradation,inpath);     
 cd(pwd0);
