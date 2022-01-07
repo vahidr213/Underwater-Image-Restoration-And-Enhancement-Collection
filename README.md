@@ -28,5 +28,3 @@ Therefore, the materials provided here are a survey on underwater restoration an
 
 The provided source code is compiled with octave without problem. In case you have MATLAB software, you may possibly need to change some functions with their MATLAB counterparts ( the source code is is mostly compatible with MATLAB).
 
-	**Description of functions:**
-
