@@ -1,13 +1,13 @@
 ﻿
 **Labels**
 
-Label	Operation
+Label	    Operation
 
-1	    Red channel mean shift and sharpening
+1     Red channel mean shift and sharpening
 
-2	    Global RGB Adaptation
+2     Global RGB Adaptation
 
-3	    Global Luminance Adaptation
+3     Global Luminance Adaptation
 
 7	    Adaptive Gamma Correction for Red Channel
 
