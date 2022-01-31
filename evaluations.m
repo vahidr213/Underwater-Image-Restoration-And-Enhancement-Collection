@@ -200,7 +200,15 @@ elseif method == 18.00
     cd('./18.00/');
     imrestored = main(doDegradation,inpath);
   end
-  
+
+elseif method == 18.01
+  fprintf('\nmethod %.2f\n',method);
+  if(exist ('OCTAVE_VERSION', 'builtin'))% for Octave
+    disp('this method requires Matlab.')
+  else
+    cd('./18.01/');
+    imrestored = main(doDegradation,inpath);
+  end  
   
 end % if method
 
