@@ -1,26 +1,20 @@
 To generate targets easily from Y, we have used the following code which uses the heaviside function value 0.5 at input zero. This property can be used for using numeric label 5 as the null operation.
 
-  load X
+     load X
+     load Y
+     t = zeros(25,890);
+     for i=1:890
 
-  load Y
+         t(Y(i,3)+10*(1-heaviside(Y(i,3))),i) = 1;
 
-   t = zeros(25,890);
-   
-   for i=1:890
-   
-       t(Y(i,3)+10*(1-heaviside(Y(i,3))),i) = 1;
-       
-   end
-   
-   net = patternnet(i);
-   
-   net = train(net,repmat(X',1,100),repmat(t,1,100));
+     end
+     net = patternnet(i);
+     net = train(net,repmat(X',1,100),repmat(t,1,100));
 
 
 
 
 
 Labels
-
 
 ![Untitled](https://user-images.githubusercontent.com/6873668/151862911-a1fad321-a8ee-4e69-8cf3-d3bde8706322.png)
