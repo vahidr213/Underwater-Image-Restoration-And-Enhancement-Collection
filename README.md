@@ -6,6 +6,8 @@ Run this file to see the results.
 Use vector 'method' to add or remove any numbered algorithm from the list of evaluations.
 You can use any underwater image you have. The file is ready to be used with only a few settings like the address of the input image and the folder to save the result. You can enable or disable the option for saving the result on the disk.
 
+The code for paper Underwater Image Restoration with a Complementary Haar Wavelet Transform Restoration and an Ensemble of Triple Elite Correction Algorithms using Bootstrap Aggregation and Random Forests is at folder 18.00.
+
 
 
 	**Introduction**
